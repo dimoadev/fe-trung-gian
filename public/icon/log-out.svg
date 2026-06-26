@@ -1,0 +1,38 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="23.466"
+  height="21.308"
+  viewBox="0 0 23.466 21.308"
+>
+  <g id="Group_14437" data-name="Group 14437" transform="translate(0.15 0.15)">
+    <g id="Group_14438" data-name="Group 14438" transform="translate(0 0)">
+      <path
+        id="Path_81117"
+        data-name="Path 81117"
+        d="M14.739,21.008H2.806A2.809,2.809,0,0,1,0,18.2V2.805A2.809,2.809,0,0,1,2.806,0H14.739a2.808,2.808,0,0,1,2.805,2.805V5.477H16.82V2.805A2.083,2.083,0,0,0,14.739.724H2.806A2.084,2.084,0,0,0,.724,2.805V18.2a2.084,2.084,0,0,0,2.082,2.081H14.739A2.083,2.083,0,0,0,16.82,18.2V14.926h.724V18.2a2.808,2.808,0,0,1-2.805,2.805"
+        fill="#394456"
+        stroke="#394456"
+        stroke-width="0.3"
+      />
+      <rect
+        id="Rectangle_20280"
+        data-name="Rectangle 20280"
+        width="11.959"
+        height="0.724"
+        transform="translate(10.633 10.142)"
+        fill="#394456"
+        stroke="#394456"
+        stroke-width="0.3"
+      />
+      <path
+        id="Path_81118"
+        data-name="Path 81118"
+        d="M51.843,25.941l-.512-.512,3.492-3.491-3.492-3.5.513-.511,4,4.013Z"
+        transform="translate(-32.742 -11.434)"
+        fill="#394456"
+        stroke="#394456"
+        stroke-width="0.3"
+      />
+    </g>
+  </g>
+</svg>

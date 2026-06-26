@@ -1,0 +1,291 @@
+.layout-component {
+  font-family: Montserrat, sans-serif;
+  color: var(--main-color);
+
+  aside {
+    /* border-right: 1px solid #ccc; */
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .logo-layout {
+    width: 50px;
+    height: auto;
+    padding: 20px 0 40px;
+  }
+
+  .logo-bottom {
+    padding: 0 0 0 20px;
+    position: absolute;
+    bottom: 10px;
+    width: 130px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #141619;
+    border-radius: 6px;
+    padding: 5px;
+
+    .img-logo-bottom {
+      height: auto;
+      border-radius: 6px;
+      
+    }
+  }
+
+  .logo-bottom:hover {
+    background: linear-gradient(#0d0d0f, #141619) padding-box,
+                linear-gradient(90deg, #A3E635, #00FFD1) border-box;
+    border: 1px solid transparent;
+    color: white !important;
+    background-clip: padding-box, text;
+    -webkit-background-clip: padding-box, text;
+    -webkit-text-fill-color: white;
+    box-shadow: 0 0 5px #A3E635;
+  }
+
+  .logo-bottom-mobile {
+    padding: 5px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 130px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 6px;
+
+    .img-logo-bottom {
+      width: 200px;
+      height: auto;
+      border-radius: 6px;
+    }
+  }
+
+  .logo-bottom-mobile:hover {
+    background: linear-gradient(#0d0d0f, #141619) padding-box,
+                linear-gradient(90deg, #A3E635, #00FFD1) border-box;
+    border: 1px solid transparent;
+    color: white !important;
+    background-clip: padding-box, text;
+    -webkit-background-clip: padding-box, text;
+    -webkit-text-fill-color: white;
+    box-shadow: 0 0 5px #A3E635;
+  }
+
+  ul.ant-menu-inline {
+    max-height: calc(100% - 360px);
+    overflow-y: auto;
+  }
+
+  .ant-layout-sider-collapsed .logo-bottom {
+    padding: 0 !important;
+    left: 10px !important;
+    width: 40px !important;
+
+    .text-d {
+      display: none;
+    }
+  }
+
+  .ant-layout-sider-collapsed .logo-bottom-mobile {
+    padding: 0 !important;
+    left: 10px !important;
+
+  }
+
+  .ant-layout-sider-children {
+    padding: 20px;
+  }
+
+  .ant-layout-sider-trigger {
+    display: none;
+  }
+
+  .ant-menu-root {
+    border: none !important;
+    border-inline-end: none;
+  }
+
+  .ant-menu-dark {
+    background-color: transparent !important;
+  }
+  .ant-menu-item:hover {
+    background: linear-gradient(#0d0d0f, #141619) padding-box,
+                linear-gradient(90deg, #A3E635, #00FFD1) border-box;
+    border: 1px solid transparent;
+    color: white !important;
+    background-clip: padding-box, text;
+    -webkit-background-clip: padding-box, text;
+    -webkit-text-fill-color: white;
+    box-shadow: 0 0 5px #A3E635;
+  }
+
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 0;
+    height: auto !important;
+    line-height: normal;
+    background-color: transparent !important;
+  }
+
+  .ant-menu-inline-collapsed .ant-menu-item,
+  .ant-menu-inline-collapsed .ant-menu-submenu-title {
+    padding: 5px !important;
+  }
+
+  .ant-menu-item-only-child {
+    font-size: 15px;
+    font-weight: 300;
+    padding: 10px 0;
+  }
+
+  .ant-menu-item-selected {
+    background-color: var(--light-sub-color);
+    font-weight: 700;
+    border-radius: 6px;
+  }
+
+  .ant-menu-item:hover {
+    background-color: var(--light-sub-color);
+  }
+  .ant-table-content table {
+    background-color: #141619;
+    border-radius: 0 !important;
+    border-spacing: 2px;
+    padding: 5px;
+  }
+  .ant-table-thead tr th {
+    background-color: #0d0d0f !important;
+    color: white;
+  }
+
+  .ant-table-tbody, .ant-table-placeholder {
+    background-color: #141619 !important;
+    color: white;
+  }
+
+
+
+  .ant-table-placeholder:hover {
+    background-color: #141619 !important;
+  }
+
+  .ant-select-selector, .ant-pagination-item {
+    background-color: #141619 !important;
+    color: white;
+    border-color: white;
+  }
+
+  .ant-select-selector:hover {
+    border-color: white !important;
+  }
+
+  .ant-pagination-item a, .ant-pagination-total-text {
+    color: white;
+  }
+
+  /* .ant-table-cell:hover {
+    background: linear-gradient(#0d0d0f, #141619) padding-box,
+    linear-gradient(90deg, #A3E635, #00FFD1) border-box !important;
+  } */
+
+  .ant-table-cell-row-hover {
+    background: linear-gradient(#0d0d0f, #141619) padding-box,
+    linear-gradient(90deg, #A3E635, #00FFD1) border-box !important;
+  }
+
+  .ant-table-row {
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+
+  .ant-table-row:hover {
+    background: linear-gradient(#0d0d0f, #141619) padding-box,
+                linear-gradient(90deg, #A3E635, #00FFD1) border-box;
+    border: 1px solid transparent;
+    /* color: white !important; */
+    background-clip: padding-box, text;
+    -webkit-background-clip: padding-box, text;
+    /* -webkit-text-fill-color: white; */
+    box-shadow: 0 0 5px #A3E635;
+  }
+
+  .ant-tabs-tab-btn {
+    color: white;
+  }
+
+  .ant-menu-item-divider {
+    border-color: #ffffffa6;
+    margin: 15px 0;
+  }
+  .layout-header {
+    background: #0d0d0f;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px 0px 50px;
+    color: white;
+  }
+
+  .layout-content {
+    background: #141619;
+    padding: 10px;
+    color: var(--main-color);
+  }
+
+  .button-collapse {
+    border-radius: 50%;
+    border: 1px solid #141619;
+    padding: 2px;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+    background-color: rgb(50, 47, 47);
+    font-weight: 200;
+  }
+
+  .button-tools {
+    border-radius: var(--border-radius);
+    border: 1px solid #e2e2e2;
+    padding: 2px 5px;
+    margin: 0;
+    background-color: var(--orange-color);
+    font-weight: 200;
+  }
+}
+
+@media (min-width: 921px) {
+  .layout-header {
+    padding: 0 50px;
+  }
+}
+
+@media (min-width: 1444px) {
+  .layout-component {
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      padding: 10px 0;
+    }
+
+    .logo-bottom {
+      padding: 0;
+      bottom: 10px;
+
+      .img-logo-bottom {
+        height: auto;
+        border-radius: 6px;
+      }
+    }
+
+    .layout-content {
+      padding: 35px;
+    }
+  }
+}

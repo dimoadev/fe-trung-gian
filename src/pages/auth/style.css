@@ -1,0 +1,390 @@
+/* General container */
+.containerX {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #131619;
+}
+
+/* Left section (form section) */
+.left {
+  flex: 6;
+  width: 100%;
+  overflow-y: auto;
+  
+}
+
+.leftLogin {
+  flex: 6;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.leftContainer {
+  width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.leftContainerHeader {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-top: 20px;
+}
+
+/* Welcome Text */
+.welcomeText {
+  color: #264039;
+  text-align: center;
+  font-size: 30px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 300;
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+.welcomeTextSub {
+  color: #264039;
+  text-align: center;
+  font-size: 30px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 1em;
+}
+
+/* Form */
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+/* Input fields */
+.input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: var(--main-color);
+}
+
+/* Label styles */
+.label {
+  align-self: flex-start;
+  font-size: 14px;
+  color: var(--main-color);
+  margin-bottom: 5px;
+}
+
+/* Password input wrapper */
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Eye icon for password visibility */
+.eyeButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Checkbox wrapper */
+.checkboxWrapper {
+  align-self: flex-start;
+  margin-bottom: 20px;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+/* Forgot password link */
+.forgotPassword {
+  align-self: flex-start;
+  font-size: 14px;
+  color: #418161;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+/* Submit button */
+.buttonSubmit {
+  width: 100%;
+  height: 41px;
+  margin-top: 10px;
+}
+
+.buttonSubmitSales {
+  width: 100%;
+  height: 41px;
+  margin-top: 10px;
+  background-color: var(--sub-color);
+  color: white;
+  border: none !important;
+}
+
+.buttonSubmitSales:hover {
+  background-color: #00b9be !important;
+  border: none;
+  color: white !important;
+}
+
+.button:hover {
+  background: #019ea3;
+}
+
+/* Right section (image section) */
+.right {
+  display: none;
+  flex: 4;
+  background: #c1ebf1;
+  color: #fff;
+  width: 100%;
+}
+
+.rightSignUp {
+  display: none;
+  flex: 4;
+  background: var(--main-color);
+  color: #fff;
+  width: 100%;
+}
+
+/* Image wrapper */
+.rightContainer {
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  padding-top: 50px;
+  position: relative;
+  width: 100%;
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    max-height: 647px;
+    border-radius: var(--border-radius);
+  }
+
+  .star {
+    position: absolute;
+    top: 15%;
+    right: 15%;
+    width: 60%;
+    height: 220px;
+    background-color: white;
+    opacity: 0.8;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 5%;
+
+    p {
+      color: var(--main-color);
+      margin: 0;
+      font-size: 12px;
+      font-family: Montserrat, sans-serif;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+
+    h5 {
+      color: var(--main-color);
+      margin: 0;
+      align-self: flex-start;
+      font-family: alisha, sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 22px;
+    }
+  }
+}
+
+/* Tagline */
+.ctnTagline {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.tagline {
+  word-wrap: break-word;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 50px;
+  letter-spacing: -3px;
+  text-align: left;
+  line-height: 50px;
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+
+/* Sign-up link */
+.signUpLink {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #264039;
+  text-align: center;
+}
+
+.signUpLink strong {
+  font-weight: bold;
+  color: var(--main-color);
+  text-decoration: none;
+}
+
+.signUpLink a {
+  text-decoration: none;
+}
+
+.antInput {
+  padding: 8px;
+}
+
+.rememberMe {
+  color: var(--main-color);
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.forgotPass {
+  margin: 30px 0;
+  font-size: 16px;
+  color: var(--main-color);
+  text-align: center;
+  width: 100%;
+
+  a {
+    color: var(--main-color);
+  }
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .leftContainer {
+    width: 55%;
+  }
+
+  .leftContainerHeader {
+      width: 55%;
+  }
+
+  .wrap {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 1024px) {
+  .right {
+    display: block;
+  }
+
+  .rightSignUp {
+    display: block;
+  }
+
+  .leftContainer {
+    width: 50%;
+  }
+
+  .leftContainerHeader {
+      width: 50%;
+  }
+
+  .image {
+    .star {
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1444px) {
+  .leftContainer {
+    width: 43%;
+  }
+
+  .leftContainerHeader {
+      width: 43%;
+  }
+
+  .welcomeText {
+    font-size: 35px;
+  }
+
+  .welcomeTextSub {
+    font-size: 35px;
+  }
+
+  .antInput {
+    padding: 10px;
+  }
+
+  .buttonSubmit {
+    height: 45px;
+    margin-top: 20px;
+  }
+
+  .buttonSubmitSales {
+    height: 45px;
+    margin-top: 20px;
+  }
+
+  .tagline {
+    font-size: 60px;
+    line-height: 60px;
+    margin-top: 1em;
+  }
+
+  .rightContainer {
+    width: 75%;
+  }
+
+  .image {
+    .star {
+      width: 70%;
+      top: 10%;
+      padding: 3%;
+      right: 12%;
+
+      p {
+        font-size: 16px;
+      }
+    }
+  }
+}

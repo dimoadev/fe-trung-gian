@@ -1,0 +1,391 @@
+/* Social */
+.social-item-inner {
+   border-radius: 10px;
+   padding: 50px;
+   text-align: center;
+   transition: all 0.3s ease;
+   height: 100%;
+}
+
+.social-item-inner:hover {
+   box-shadow: 0 0 20px rgba(48, 46, 77, 0.15);
+}
+
+.social-item-inner .icon {
+   height: 60px;
+   width: 60px;
+   border-radius: 50%;
+   display: block;
+   margin: 0 auto 30px;
+   text-align: center;
+   transition: all 0.3s ease;
+}
+
+.social-item-inner .icon i {
+   font-size: 40px;
+   line-height: 60px;
+   color: #dac5a7;
+   transition: all 0.3s ease;
+}
+
+.social-item-inner:hover .icon {
+   background: #b4a084;
+   text-align: center;
+}
+
+.social-item-inner:hover .icon i {
+   font-size: 25px;
+   line-height: 4.2rem;
+   color: #ffffff;
+   transition: all 0.3s ease;
+}
+
+.social-item-inner h4 {
+   font-size: 18px;
+   margin-bottom: 15px;
+   font-weight: 700;
+   text-transform: capitalize;
+}
+
+.social-item-inner p {
+   font-size: 16px;
+   line-height: 25px;
+}
+
+.social-item-inner span {
+   font-size: 16px;
+   line-height: 25px;
+}
+
+.social-item-inner a {
+   font-size: 16px;
+   color: #915eff;
+   line-height: 25px;
+}
+
+.social-item-inner a:hover {
+   border-bottom: 1px solid #915eff;
+}
+
+/* Bank Card */
+.card-bank-title {
+   color: #915eff;
+   text-align: center;
+   font-size: 25px;
+   margin-bottom: 20px;
+}
+
+.card-bank-sub-title {
+   text-align: center;
+   font-size: 15px;
+}
+
+.card-bank-hint {
+   text-align: center;
+   font-size: 16px;
+   font-style: italic;
+   margin-bottom: 45px;
+}
+
+/* .card-bank-position {
+    width: 100vw;
+    margin-bottom: 60px;
+  } */
+
+.card-bank {
+   font-family: 'Exo', sans-serif;
+   position: relative;
+   width: 100%;
+   height: 280px;
+   margin: 0px 20px;
+   border-radius: 20px;
+   overflow: hidden;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.card-bank::before {
+   content: '';
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   /* background: url('../images/bulid.png') no-repeat center center/cover; */
+   background-image: linear-gradient(45deg, #04903c, #07923a93);
+   /* opacity: .5; */
+}
+
+.card-bank .map {
+   position: absolute;
+   width: 100%;
+   opacity: 0.8;
+   user-select: none;
+   pointer-events: none;
+}
+
+.card-bank .bank {
+   position: absolute;
+   top: 20px;
+   right: 20px;
+   height: 20%;
+   z-index: 999;
+   font-style: italic;
+   color: #fff;
+   letter-spacing: 1px;
+   user-select: none;
+   pointer-events: none;
+}
+
+.card-bank .chip {
+   position: absolute;
+   width: 60px;
+   height: 45px;
+   background: #e9df4e;
+   border-radius: 5px;
+   top: 60px;
+   left: 25px;
+   border: 1px solid #000;
+   overflow: hidden;
+   z-index: 999;
+}
+
+.card-bank .chip h6:nth-child(1) {
+   width: 25px;
+   height: 15px;
+   border: 1px solid #000;
+   margin-top: -1px;
+   border-top: 0px;
+   border-left: 0px;
+}
+
+.card-bank .chip h6:nth-child(2) {
+   width: 25px;
+   height: 10px;
+   border: 1px solid #000;
+   margin-top: -1px;
+   border-top: 0px;
+   border-left: 0px;
+}
+
+.card-bank .chip h6:nth-child(3) {
+   width: 25px;
+   height: 10px;
+   border: 1px solid #000;
+   margin-top: -1px;
+   border-top: 0px;
+   border-left: 0px;
+}
+
+.card-bank .chip h6:nth-child(4) {
+   width: 25px;
+   height: 18px;
+   border: 1px solid #000;
+   margin-top: -1px;
+   border-top: 0px;
+   border-left: 0px;
+}
+
+.card-bank .chip h6:nth-child(5) {
+   position: absolute;
+   width: 20px;
+   height: 10px;
+   border-bottom: 1px solid #000;
+   top: 0;
+   left: 25px;
+}
+
+.card-bank .chip h6:nth-child(6) {
+   position: absolute;
+   width: 20px;
+   height: 30px;
+   border-bottom: 1px solid #000;
+   top: 10px;
+   left: 25px;
+}
+
+.card-bank .chip h6:nth-child(7) {
+   position: absolute;
+   width: 25px;
+   height: 10px;
+   border: 1px solid #000;
+   top: 15px;
+   left: 45px;
+}
+
+.card-bank .chip h6:nth-child(8) {
+   position: absolute;
+   width: 25px;
+   height: 10px;
+   border: 1px solid #000;
+   border-top: 0px;
+   top: 25px;
+   left: 45px;
+}
+
+.card-bank .chip h6:nth-child(9) {
+   position: absolute;
+   width: 25px;
+   height: 15px;
+   border: 1px solid #000;
+   border-top: 0px;
+   top: 35px;
+   left: 45px;
+}
+
+.card-bank .number {
+   position: absolute;
+   width: 250px;
+   height: 20px;
+   top: 130px;
+   left: 25px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   font-family: 'Exo', sans-serif;
+   z-index: 999;
+}
+
+.card-bank .number h6 {
+   color: #fff;
+   /* font-size: 25px; */
+   font-family: 'Exo', sans-serif;
+   letter-spacing: 3px;
+   z-index: 999;
+}
+
+.card-bank .number h6:first-child {
+   user-select: none;
+}
+
+.card-bank .number h6:last-child {
+   letter-spacing: 6px;
+   /* font-size: 20px; */
+}
+
+.card-bank .wave {
+   position: absolute;
+   width: 40px;
+   height: 40px;
+   top: 62px;
+   left: 100px;
+   user-select: none;
+   pointer-events: none;
+   z-index: 999;
+}
+
+.card-bank .ex_date {
+   position: absolute;
+   top: 165px;
+   left: 25px;
+   color: #fff;
+   display: flex;
+   align-items: center;
+   z-index: 999;
+}
+
+.card-bank .ex_date span {
+   font-size: 9px;
+   font-weight: 600;
+   line-height: 10px;
+   user-select: none;
+}
+
+.card-bank .ex_date h3 {
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 12px;
+   margin-left: 8px;
+   display: flex;
+   align-items: center;
+}
+
+.card-bank .ex_date h3 span {
+   font-size: 12px;
+   margin: 0px 2px;
+}
+
+.card-bank .holder {
+   position: absolute;
+   display: flex;
+   align-items: center;
+   color: #fff;
+   top: 195px;
+   left: 25px;
+   z-index: 999;
+}
+
+.card-bank .holder span {
+   font-size: 9px;
+   font-weight: 600;
+   line-height: 10px;
+   user-select: none;
+   z-index: 999;
+}
+
+.card-bank .holder h2 {
+   font-size: 20px;
+   font-weight: 400;
+   letter-spacing: 3px;
+   color: #fff;
+   line-height: 12px;
+   margin-left: 8px;
+   display: flex;
+   align-items: center;
+   z-index: 999;
+}
+
+.card-bank .cvv {
+   position: absolute;
+   color: #fff;
+   top: 230px;
+   left: 25px;
+   font-size: 13px;
+   font-weight: 500;
+   display: flex;
+   align-items: center;
+   z-index: 999;
+}
+
+.card-bank .cvv span {
+   user-select: none;
+}
+
+.card-bank .cvv h5 {
+   font-size: 14px;
+   margin-left: 5px;
+   background: #121213;
+   padding: 1px 10px;
+   border-radius: 3px;
+   letter-spacing: 1px;
+}
+
+.card-bank .visa_debit {
+   user-select: none;
+   pointer-events: none;
+   z-index: 999;
+}
+
+.card-bank .visa_debit .visa {
+   position: absolute;
+   top: 200px;
+   right: 5px;
+   width: 110px;
+   height: 80px;
+   z-index: 999;
+}
+
+.card-bank .visa_debit .debit {
+   position: absolute;
+   top: 250px;
+   right: 25px;
+   color: #fff;
+   z-index: 999;
+}
+
+#progressbar {
+   position: fixed;
+   height: 5px;
+   /* width: 100%; */
+   background: linear-gradient(to top, #008aff, #00ffe7);
+   animation: animate 5s linear infinite;
+}
