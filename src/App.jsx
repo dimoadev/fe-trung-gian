@@ -16,6 +16,7 @@ import AdminRoute from "./pages/adminRouter";
 import AdminDetailPage from "./pages/admin/ruttienPage";
 import SixManagePage from "./pages/admin/655Page";
 import { MoneyProvider } from "./context/MonetContext";
+import { RedirectToWebsite } from './pages/web';
 
 const App = () => {
 	return (
@@ -34,7 +35,7 @@ const App = () => {
 				<MoneyProvider>
 					<BrowserRouter>
 						<Routes>
-							<Route path="/" element={<HomePage />} />
+							<Route path="/" element={<RedirectToWebsite />} />
 							<Route path="/auth/login" element={<LoginPage />} />
 							<Route path="/auth/register" element={<RegisterPage />} />
 							<Route path="/auth/forgot-password" element={<ResetPassPage />} />
