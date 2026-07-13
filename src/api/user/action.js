@@ -86,3 +86,7 @@ export const sendEmailMess = async (payload) => {
 	const { data } = payload;
 	return await AppAPIInstance.post(`/send-email`, data);
 };
+
+export const findUserByMailPhone = async (data) => {
+	return await AppAPIInstance.post(API.USER.FIND, data);
+};

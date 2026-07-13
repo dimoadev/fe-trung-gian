@@ -52,7 +52,7 @@ const LayoutComponent = ({ isSetting, children }) => {
 
 	const itemsSidebar = [
 		getItem(
-			"Nhóm 6/55",
+			"HĐ cọc của tôi",
 			"1",
 			<Image
 				src="/image/icon55.png"
@@ -62,28 +62,7 @@ const LayoutComponent = ({ isSetting, children }) => {
 				preview={false}
 			/>
 		),
-		getItem(
-			"Nhóm 6/45",
-			"2",
-			<Image
-				src="/image/icon45.png"
-				width={26}
-				height={26}
-				alt="icon-support"
-				preview={false}
-			/>
-		),
-		getItem(
-			"Nhóm 6/35",
-			"3",
-			<Image
-				src="/image/icon35.png"
-				width={26}
-				height={26}
-				alt="icon-support"
-				preview={false}
-			/>
-		),
+		
 		{
 			type: "divider",
 		},
@@ -115,12 +94,6 @@ const LayoutComponent = ({ isSetting, children }) => {
 		if (e.key === "1") {
 			navigate("/dashboard");
 		}
-		if (e.key === "2") {
-			navigate("/644");
-		}
-		if (e.key === "3") {
-			navigate("/635");
-		}
 		if (e.key === "4") {
 			navigate("/personal/detail");
 		}
@@ -133,12 +106,7 @@ const LayoutComponent = ({ isSetting, children }) => {
 		if (path === "/dashboard") {
 			return "1";
 		}
-		if (path === "/644") {
-			return "2";
-		}
-		if (path === "/635") {
-			return "3";
-		}
+		
 		if (path === "/personal/detail") {
 			return "4";
 		}

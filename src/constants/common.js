@@ -11,17 +11,17 @@ export const ColorMapping = {
 }
 
 export const ColorSessionMapping = {
-    PENDING: "orange",
-RUNNING: "green",
-WAITING_RESULT: "cyan",
-FINISHED: "grey"
+    OPEN: "orange",
+    DEPOSITED: "green",
+    CANCELLED: "cyan",
+    COMPLETED: "grey"
 }
 
 export const StatusSessionMapping = {
-    PENDING: "Đang diễn ra",
-RUNNING: "Chờ chia thưởng",
-WAITING_RESULT: "Chờ quay",
-FINISHED: "Đã chia thưởng"
+    OPEN: "Đang mở",
+    DEPOSITED: "Đã nhận",
+    CANCELLED: "Đã hủy",
+    COMPLETED: "Hoàn toàn"
 }
 
 export const Prize655 = {

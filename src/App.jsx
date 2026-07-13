@@ -55,7 +55,7 @@ const App = () => {
 							/>
 
 							<Route
-								path="/655/detail/:id"
+								path="/contract/detail/:id"
 								element={
 									<PrivateRoute>
 										<DashboardDetailPage />

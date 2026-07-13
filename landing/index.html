@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Connect - Kết nối thông minh</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+    <style>
+        /* --- ĐỊNH DẠNG CHUNG & BIẾN MÀU SẮC --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --bg-color: #020617;
+            --card-bg: #0b1329;
+            --primary-blue: #00d9ff;
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+            --border-color: #1e293b;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+
+        /* --- HỆ THỐNG NÚT BẤM (BUTTONS) --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 99px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00d9ff, #43caf7, #6fb1fc);
+            background-size: 200% 200%;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
+        }
+        .btn-primary:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 102, 255, 0.5);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 102, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* --- HIỆU ỨNG AN ĐẨY KHI CUỘN XUỐNG --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- ĐẦU TRANG (HEADER / MENU) --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: var(--primary-blue);
+        }
+        nav ul {
+            display: flex;
+            gap: 32px;
+        }
+        nav a {
+            color: var(--text-gray);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--text-light);
+        }
+        header .btn {
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            padding: 180px 0 100px;
+            text-align: center;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+        }
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hero .container {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+        .hero h1 span {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            color: var(--text-gray);
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* --- TIÊU ĐỀ CÁC PHÂN ĐOẠN --- */
+        .section-tag {
+            color: var(--primary-blue);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+
+        /* --- KHU VỰC CÁCH HOẠT ĐỘNG --- */
+        .work {
+            padding: 100px 0;
+        }
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        .work-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px 24px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .work-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 102, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.15);
+        }
+        .step-num {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .work-card i {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 24px;
+            display: block;
+        }
+        .work-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .work-card p {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        /* --- KHU VỰC FAQ (CÂU HỎI THƯỜNG GẶP) --- */
+        .faq {
+            padding: 100px 0;
+        }
+        .faq-layout {
+            display: grid;
+            grid-template-columns: 4.5fr 7.5fr;
+            gap: 60px;
+        }
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .faq-item {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .faq-item:hover {
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+        .faq-header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+            color: var(--text-gray);
+        }
+        .faq-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+            padding: 0 24px;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+        .faq-item.active .faq-body {
+            max-height: 1000px;
+            transition: max-height 0.5s cubic-bezier(1, 0, 1, 0);
+            padding-bottom: 20px;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: var(--primary-blue);
+        }
+
+        /* --- KHU VỰC TỔNG QUAN (OVERVIEW) --- */
+        .overview {
+            padding: 100px 0;
+            position: relative;
+        }
+        .overview-layout {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            align-items: center;
+            gap: 40px;
+        }
+        .overview-visual {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #globe-canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .overview-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .feat-box {
+            padding: 20px;
+            border-left: 2px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        .feat-box:hover {
+            border-left-color: var(--primary-blue);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .feat-box i {
+            color: var(--primary-blue);
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        .feat-box h4 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .feat-box p {
+            color: var(--text-gray);
+            font-size: 12px;
+        }
+        .contact {
+            padding: 100px 0;
+        }
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 5fr 7fr;gap: 60px;}
+            .info-list {margin: 32px 0;}.info-item {display: flex;align-items: center;gap: 16px;margin-bottom: 20px;color: var(--text-gray);}.info-item i {color: var(--primary-blue);width: 20px;}.socials {display: flex;gap: 16px;}.socials a {width: 40px;height: 40px;border-radius: 50%;border: 1px solid var(--border-color);display: flex;align-items: center;justify-content: center;color: var(--text-gray);transition: all 0.3s;}.socials a:hover {color: var(--text-light);border-color: var(--primary-blue);background: rgba(0, 102, 255, 0.1);transform: scale(1.1);}.contact-form {background: var(--card-bg);border: 1px solid var(--border-color);padding: 40px;border-radius: 20px;}.form-group {margin-bottom: 20px;}.form-group input, .form-group textarea {width: 100%;padding: 16px;background: #020617;border: 1px solid var(--border-color);border-radius: 8px;color: var(--text-light);outline: none;transition: border-color 0.3s;}.form-group input:focus, .form-group textarea:focus {border-color: var(--primary-blue);}.contact-form .btn {width: 100%;gap: 10px;}/* --- CHÂN TRANG (FOOTER) --- */footer {padding: 40px 0;text-align: center;border-top: 1px solid var(--border-color);color: var(--text-gray);font-size: 14px;}/* --- CẤU HÌNH THÍCH ỨNG DI ĐỘNG (RESPONSIVE) --- */@media (max-width: 1024px) {.work-grid { grid-template-columns: repeat(2, 1fr); }.faq-layout, .overview-layout, .contact-layout { grid-template-columns: 1fr; gap: 40px; }.overview-visual { height: 350px; }}@media (max-width: 768px) {.hero h1 { font-size: 40px; }nav { display: none; }.work-grid { grid-template-columns: 1fr; }.overview-features { grid-template-columns: 1fr; }}
+
+</style>
+</head>
+<body>
+
+    <!-- THANH MENU ĐIỀU HƯỚNG -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo"><i class="fa-solid fa-circle-nodes"></i> NET <span>CONNECT</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#work">Cách hoạt động</a></li>
+                    <li><a href="#faq">Câu hỏi</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <a href="#contact" class="btn btn-primary">Bắt đầu ngay</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION (PHẦN ĐẦU TRANG) -->
+    <section class="hero">
+        <!-- Canvas xử lý mạng lưới hạt chớp nháy tự động -->
+        <canvas id="hero-canvas"></canvas>
+        <div class="container reveal">
+            <h1>Kết nối thông minh<br>Dẫn lối <span>tương lai</span></h1>
+            <p>Nền tảng giúp bạn kết nối, chia sẻ và tăng trưởng hiệu quả nhờ công nghệ tiên tiến và dữ liệu thông minh.</p>
+            <div class="hero-btns">
+                <a href="#contact" class="btn btn-primary">Bắt đầu ngay</a>
+                <a href="#" class="btn btn-outline" style="gap: 8px;"><i class="fa-solid fa-circle-play"></i> Xem video giới thiệu</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK SECTION (CÁCH HOẠT ĐỘNG) -->
+    <section class="work" id="work">
+        <div class="container">
+            <span class="section-tag reveal">Cách hoạt động</span>
+            <h2 class="section-title reveal">Đơn giản. Hiệu quả. Kết nối.</h2>
+            
+            <div class="work-grid">
+                <div class="work-card reveal">
+                    <span class="step-num">1</span>
+                    <i class="fa-regular fa-user"></i>
+                    <h3>Đăng ký</h3>
+                    <p>Tạo tài khoản miễn phí chỉ trong vài giây.</p>
+                </div>
+                <div class="work-card reveal">
+                    <span class="step-num">2</span>
+                    <i class="fa-solid fa-link"></i>
+                    <h3>Kết nối</h3>
+                    <p>Kết nối với đối tác, dữ liệu và công cụ bạn cần.</p>
+                </div>
+                <div class="work-card reveal">
+                    <span class="step-num">3</span>
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Tối ưu</h3>
+                    <p>Tận dụng công nghệ và dữ liệu để tối ưu hiệu suất.</p>
+                </div>
+                <div class="work-card reveal">
+                    <span class="step-num">4</span>
+                    <i class="fa-regular fa-circle-check"></i>
+                    <h3>Phát triển</h3>
+                    <p>Mở rộng quy mô và đạt được mục tiêu bền vững.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION (CÂU HỎI THƯỜNG GẶP) -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="faq-layout">
+                <div class="reveal">
+                    <span class="section-tag">Câu hỏi & Giải đáp</span>
+                    <h2 class="section-title" style="margin-bottom: 24px;">Những câu hỏi thường gặp</h2>
+                    <p style="color: var(--text-gray); margin-bottom: 32px;">Dưới đây là một số câu hỏi phổ biến. Nếu bạn cần thêm thông tin, hãy liên hệ với chúng tôi.</p>
+                    <a href="#contact" class="btn btn-outline"><i class="fa-regular fa-comment-dots" style="margin-right: 8px;"></i> Liên hệ hỗ trợ</a>
+                </div>
+                
+                <div class="faq-accordion reveal">
+                    <div class="faq-item active">
+                        <div class="faq-header">
+                            <span>1. Nền tảng này là gì?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </div>
+                        <div class="faq-body">
+                            <p>Đây là nền tảng kết nối thông minh giúp cá nhân và doanh nghiệp kết nối, chia sẻ và tối ưu hóa hiệu suất thông qua công nghệ và dữ liệu.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-header">
+                            <span>2. Tôi cần chi trả bao nhiêu để sử dụng?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </div>
+                        <div class="faq-body">
+                            <p>Chúng tôi cung cấp nhiều gói dịch vụ linh hoạt từ miễn phí đến nâng cao phù hợp với mọi nhu cầu của bạn.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-header">
+                            <span>3. Dữ liệu của tôi có được bảo mật không?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </div>
+                        <div class="faq-body">
+                            <p>Bảo mật là ưu tiên hàng đầu. Hệ thống áp dụng tiêu chuẩn mã hóa dữ liệu cao cấp nhất hiện nay.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-header">
+                            <span>4. Tôi có thể tích hợp với công cụ khác không?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </div>
+                        <div class="faq-body">
+                            <p>Có, nền tảng hỗ trợ cổng API mạnh mẽ giúp tích hợp mượt mà với hầu hết công cụ quản lý hiện nay.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-header">
+                            <span>5. Làm thế nào để bắt đầu?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </div>
+                        <div class="faq-body">
+                            <p>Chỉ cần nhấn vào nút "Bắt đầu ngay", tạo tài khoản và làm theo hướng dẫn thiết lập trong 3 bước.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OVERVIEW SECTION (TỔNG QUAN) -->
+    <section class="overview">
+        <div class="container">
+            <div class="overview-layout">
+                <div class="reveal">
+                    <span class="section-tag">Tổng quan</span>
+                    <h2 class="section-title" style="margin-bottom: 24px;">Công nghệ kết nối<br>Thành công bền vững</h2>
+                    <p style="color: var(--text-gray);">Chúng tôi xây dựng nền tảng với mục tiêu giúp mọi người và doanh nghiệp kết nối dễ dàng hơn, làm việc thông minh hơn và phát triển bền vững hơn trong kỷ nguyên số.</p>
+                    
+                    <div class="overview-features">
+                        <div class="feat-box">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <h4>Bảo mật</h4>
+                            <p>Tiêu chuẩn bảo mật hàng đầu.</p>
+                        </div>
+                        <div class="feat-box">
+                            <i class="fa-solid fa-bolt"></i>
+                            <h4>Hiệu suất</h4>
+                            <p>Xử lý nhanh chóng, ổn định.</p>
+                        </div>
+                        <div class="feat-box">
+                            <i class="fa-solid fa-globe"></i>
+                            <h4>Mở rộng</h4>
+                            <p>Dễ dàng mở rộng theo nhu cầu.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Khu vực hiển thị quả cầu xoay động bằng Canvas -->
+                <div class="overview-visual reveal">
+                    <canvas id="globe-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION (LIÊN HỆ) -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-layout">
+                <div class="reveal">
+                    <span class="section-tag">Liên hệ</span>
+                    <h2 class="section-title" style="margin-bottom: 24px;">Chúng tôi luôn sẵn sàng hỗ trợ bạn</h2>
+                    <p style="color: var(--text-gray);">Đừng ngần ngại liên hệ với chúng tôi để được tư vấn và hỗ trợ nhanh nhất.</p>
+                    
+                    <div class="info-list">
+                        <div class="info-item">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span>support@netconnect.com</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+84 123 456 789</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>123 Đường ABC, Quận 1, TP. Hồ Chí Minh, Việt Nam</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    /* ==========================================================================
+       1. HIỆU ỨNG CHỚP MẠNG LƯỚI KHÔNG GIAN (HERO CANVAS LOGIC)
+       ========================================================================== */
+    const heroCanvas = document.getElementById('hero-canvas');
+    const hCtx = heroCanvas.getContext('2d');
+    let points = [];
+    const maxPoints = 60; // Số lượng điểm hạt phân bố tự do
+
+    function resizeHeroCanvas() {
+        heroCanvas.width = heroCanvas.offsetWidth;
+        heroCanvas.height = heroCanvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeHeroCanvas);
+    resizeHeroCanvas();
+
+    // Khởi tạo các điểm mạng lưới với vận tốc di chuyển và vận tốc chớp nháy ngẫu nhiên
+    class Point {
+        constructor() {
+            this.x = Math.random() * heroCanvas.width;
+            this.y = Math.random() * heroCanvas.height;
+            this.vx = (Math.random() - 0.5) * 0.8;
+            this.vy = (Math.random() - 0.5) * 0.8;
+            this.radius = Math.random() * 2 + 1;
+            this.blinkSpeed = 0.02 + Math.random() * 0.04;
+            this.alpha = Math.random();
+            this.growing = true;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Va chạm viền canvas để đảo hướng di chuyển
+            if (this.x < 0 || this.x > heroCanvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > heroCanvas.height) this.vy *= -1;
+
+            // Xử lý chu kỳ tăng giảm độ mờ độc lập (Hiệu ứng chớp nháy kết nối)
+            if (this.growing) {
+                this.alpha += this.blinkSpeed;
+                if (this.alpha >= 1) this.growing = false;
+            } else {
+                this.alpha -= this.blinkSpeed;
+                if (this.alpha <= 0.1) this.growing = true;
+            }
+        }
+        draw() {
+            hCtx.beginPath();
+            hCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            hCtx.fillStyle = `rgba(0, 102, 255, ${this.alpha})`;
+            hCtx.fill();
+        }
+    }
+
+    // Tạo mảng đối tượng
+    for (let i = 0; i < maxPoints; i++) points.push(new Point());
+
+    function animateHero() {
+        hCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+        
+        // Tính toán khoảng cách và kết nối đường liên kết mờ giữa các hạt ở gần nhau
+        for (let i = 0; i < points.length; i++) {
+            for (let j = i + 1; j < points.length; j++) {
+                let dist = Math.hypot(points[i].x - points[j].x, points[i].y - points[j].y);
+                if (dist < 130) {
+                    let avgAlpha = (points[i].alpha + points[j].alpha) / 2;
+                    hCtx.beginPath();
+                    hCtx.moveTo(points[i].x, points[i].y);
+                    hCtx.lineTo(points[j].x, points[j].y);
+                    // Đường vẽ cũng đồng bộ theo độ mờ chớp nháy của 2 điểm đầu mút
+                    hCtx.strokeStyle = `rgba(0, 102, 255, ${(1 - dist/130) * 0.18 * avgAlpha})`;
+                    hCtx.lineWidth = 1;
+                    hCtx.stroke();
+                }
+            }
+        }
+
+        points.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateHero);
+    }
+    animateHero();
+
+
+    /* ==========================================================================
+       2. HIỆU ỨNG QUẢ CẦU MATRIX XOAY 3D (GLOBE CANVAS LOGIC)
+       ========================================================================== */
+    const globeCanvas = document.getElementById('globe-canvas');
+    const gCtx = globeCanvas.getContext('2d');
+    let globePoints = [];
+    const totalGlobePoints = 160; // Số lượng nút thắt tạo khối tròn hình học
+    let angleY = 0; 
+
+    function resizeGlobeCanvas() {
+        globeCanvas.width = globeCanvas.offsetWidth;
+        globeCanvas.height = globeCanvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeGlobeCanvas);
+    resizeGlobeCanvas();
+
+    // Thuật toán phân bổ chuẩn Fibonacci để định vị các điểm đều nhau trên bề mặt mặt cầu 3D
+    for (let i = 0; i < totalGlobePoints; i++) {
+        let phi = Math.acos(-1 + (2 * i) / totalGlobePoints);
+        let theta = Math.sqrt(totalGlobePoints * Math.PI) * phi;
+        globePoints.push({
+            x: Math.sin(phi) * Math.cos(theta),
+            y: Math.cos(phi),
+            z: Math.sin(phi) * Math.sin(theta)
+        });
+    }
+
+    function animateGlobe() {
+        gCtx.clearRect(0, 0, globeCanvas.width, globeCanvas.height);
+        
+        let cx = globeCanvas.width / 2;
+        let cy = globeCanvas.height / 2;
+        let radius = Math.min(cx, cy) * 0.75;
+
+        angleY += 0.003; // Vận tốc góc xoay tự động quanh trục dọc Y
+
+        let cosY = Math.cos(angleY);
+        let sinY = Math.sin(angleY);
+        let projectedPoints = [];
+
+        // Chuyển đổi ma trận xoay tọa độ không gian 3D sang tọa độ chiếu dẹt phẳng 2D
+        globePoints.forEach(p => {
+            let x1 = p.x * cosY - p.z * sinY;
+            let z1 = p.z * cosY + p.x * sinY;
+            
+            let screenX = x1 * radius + cx;
+            let screenY = p.y * radius + cy;
+            
+            projectedPoints.push({x: screenX, y: screenY, z: z1});
+        });
+
+        // Vẽ các đường vòng cung đan lưới bao quanh khối cầu
+        for(let i = 0; i < projectedPoints.length; i++) {
+            for(let j = i + 1; j < projectedPoints.length; j++) {
+                let d = Math.hypot(projectedPoints[i].x - projectedPoints[j].x, projectedPoints[i].y - projectedPoints[j].y);
+                if(d < radius * 0.4) {
+                    // Tạo chiều sâu: Điểm nằm phía trước (z > 0) nét vẽ sẽ sáng hơn điểm khuất phía sau
+                    let opacity = (1 - d/(radius * 0.4)) * 0.15;
+                    if(projectedPoints[i].z > 0 && projectedPoints[j].z > 0) opacity *= 1.8;
+                    
+                    gCtx.beginPath();
+                    gCtx.moveTo(projectedPoints[i].x, projectedPoints[i].y);
+                    gCtx.lineTo(projectedPoints[j].x, projectedPoints[j].y);
+                    gCtx.strokeStyle = `rgba(0, 150, 255, ${opacity})`;
+                    gCtx.stroke();
+                }
+            }
+        }
+
+        // Vẽ các hạt chấm tròn biểu thị cho các vệ tinh nút thắt
+        projectedPoints.forEach(p => {
+            let pRadius = p.z > 0 ? 3 : 1.5; // Điểm trước hạt to, điểm sau hạt nhỏ
+            let opacity = p.z > 0 ? 0.8 : 0.2;
+            gCtx.beginPath();
+            gCtx.arc(p.x, p.y, pRadius, 0, Math.PI * 2);
+            gCtx.fillStyle = `rgba(0, 198, 255, ${opacity})`;
+            gCtx.fill();
+        });
+
+        requestAnimationFrame(animateGlobe);
+    }
+    animateGlobe();
+
+
+    /* ==========================================================================
+       3. HIỆU ỨNG TỰ ĐỘNG HIỆN LẦN LƯỢT KHI LƯỚT WEB (SCROLL REVEAL ARRANGE)
+       ========================================================================== */
+    const reveals = document.querySelectorAll('.reveal');
+    
+    function checkReveal() {
+        const windowHeight = window.innerHeight;
+        reveals.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 100; // Ngưỡng pixel để kích hoạt hiệu ứng trồi lên
+            
+            if (elementTop < windowHeight - elementVisible) {
+                element.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', checkReveal);
+    window.addEventListener('load', checkReveal); // Chạy kiểm tra ngay khi tải xong trang đề phòng màn hình lớn
+
+
+    /* ==========================================================================
+       4. HÀNH VI ĐÓNG MỞ ACCORDION MENU (FAQ INTERACTIVE)
+       ========================================================================== */
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const header = item.querySelector('.faq-header');
+        header.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Đóng tất cả các tab câu hỏi đang mở khác để thu gọn giao diện
+            faqItems.forEach(i => i.classList.remove('active'));
+            
+            // Kích hoạt đổi trạng thái đóng/mở cho mục vừa nhấp chuột
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+</html>

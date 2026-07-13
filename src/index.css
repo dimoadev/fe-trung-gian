@@ -241,6 +241,45 @@ img {
 .ant-modal-body label{
    color: white !important;
 }
+
+.ant-input-outlined {
+   background-color: #3b3b3b !important;
+   color: white !important;
+} 
+
+.ant-input-number-input {
+   background-color: #3b3b3b !important;
+   color: white !important;
+} 
+
+.ant-input::placeholder {
+   color: #c7c6c6 !important;
+ }
+
+ .ant-select-selector {
+   background-color: #3b3b3b !important;
+   color: white !important;
+ }
+
+ .ant-select-selection-placeholder {
+   color: #c7c6c6 !important;
+ }
+.ant-modal-close-x {
+   color: white !important;
+}
+
+.ant-upload svg {
+   color: white !important;
+}
+
+ .ant-input-number-input::placeholder {
+   color: #c7c6c6 !important;
+ }
+
+ .ant-upload::placeholder {
+   color: #c7c6c6 !important;
+ }
+
 /* @media (max-width: 999px) {
    .button_downloadcv {
       width: 100%;

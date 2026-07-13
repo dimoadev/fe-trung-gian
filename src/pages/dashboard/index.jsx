@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { getListSpin } from "../../api/spin-session/action";
 import { ColorSessionMapping, StatusSessionMapping } from "../../constants/common";
 import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
+import { getListContract } from '../../api/contract/action';
 
 const { Title } = Typography;
 
@@ -55,7 +56,7 @@ export default function Home() {
 		},
 	];
 	async function getList(page) {
-		const response = await getListSpin({ page });
+		const response = await getListContract({ page });
 		if (response?.status === "success") {
 		  setListItem(response?.data?.items);
 		  setTotal(response?.data?.total);
@@ -68,7 +69,7 @@ export default function Home() {
 				setModalJoinOpen(true);
 				break;
 			case "2":
-				navigate(`/655/detail/${row.id}`);
+				navigate(`/contract/detail/${row.id}`);
 				break;
 			default:
 				console.log("Unknown action");
@@ -78,25 +79,13 @@ export default function Home() {
 	// Cột của bảng
 	const columns = [
 		{
-			title: "Kì",
-			dataIndex: "code",
+			title: "Tiêu đề",
+			dataIndex: "title",
 			key: "code",
 		},
 		{
-			title: "Số người tham gia",
-			dataIndex: "participants",
-			key: "participants",
-			//render: (_, row) => dayjs(row?.timePeriod).format("MM/YYYY"),
-		},
-		{
-			title: "Tổng số vé",
-			dataIndex: "totalTickets",
-			key: "totalTickets",
-			//render: (_, row) => formatNumber(row?.settleCommission),
-		},
-		{
-			title: "Tổng giải thưởng",
-			dataIndex: "totalPrize",
+			title: "Tiền cọc",
+			dataIndex: "depositPrice",
 			key: "totalPrize",
 			render: (row) => row && row !== "0" ? `${Number(row).toLocaleString()} VND` : "-",
 		},
@@ -135,13 +124,13 @@ export default function Home() {
 							<Flex justify="space-between">
 								{" "}
 								<Title level={4} style={{ marginTop: 0, color: "#fff" }}>
-									Nhóm 6/55
+									Danh sách HD cọc
 								</Title>
 								<button
 									onClick={() => setModalJoinOpen(true)}
 									className="button_downloadcv px-2 py-1"
 								>
-									Tham gia
+									Tạo hợp đồng cọc
 								</button>
 							</Flex>
 
@@ -175,7 +164,7 @@ export default function Home() {
 					</section>
 				</div>
 			</LayoutComponent>
-			<TaoHdCocModal open={modalJoinOpen} onClose={onCloseModalJoin} id={listItem?.[0]?.id} />
+			<TaoHdCocModal open={modalJoinOpen} onClose={onCloseModalJoin}  />
 		</div>
 	);
 }

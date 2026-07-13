@@ -22,6 +22,20 @@ export const API = {
     EDIT: (id) => `/video/${id}`,
     DELETE: (id) => `/video/${id}`,
   },
+  CONTRACT: {
+    LIST: "/contracts",
+    ADD_B: (id) => `/contracts/${id}/add-party-b`,
+    CREATE: "/video",
+    EDIT: (id) => `/video/${id}`,
+    DELETE: (id) => `/video/${id}`,
+  },
+  CHAT: {
+    LIST: "/chat",
+    DETAIL: (id) => `/chat/${id}`,
+    CREATE: "/chat",
+    EDIT: (id) => `/chat/${id}`,
+    DELETE: (id) => `/video/${id}`,
+  },
   MONEY: {
     SESSION: "/deposit/create",
     DETAIL_SESSION: (id) => `/deposit/${id}`,
@@ -52,6 +66,7 @@ export const API = {
     REGISTER: "/auth/register",
     SIGNIN_ACCOUNT: "/auth/login",
     UPDATE_PASS: "/auth/forgot-password",
+    FIND: `/users/find`
   },
 };
 
