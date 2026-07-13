@@ -12,14 +12,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - run: npm run build
+      - name: Build
+        run: pnpm run build
 
       - name: Upload dist
         uses: appleboy/scp-action@v0.1.7
