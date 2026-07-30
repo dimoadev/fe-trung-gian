@@ -51,7 +51,7 @@ import {
 	EditOutlined,
 } from '@ant-design/icons';
 import { socket } from '../../../socket';
-import { Spin } from 'antd';
+import { Spin, message as messageAntd } from 'antd';
 import { findUserByMailPhone } from '../../api/user/action';
 import StepProgress from '../../components/Progress';
 import dayjs from 'dayjs';
@@ -128,6 +128,10 @@ export default function HomeDetail() {
 		socket.on('update-status-success', () => {
 			getDetail();
 			getDetailChatGroup();
+			messageAntd.open({
+				type: 'success',
+				content: 'Đã xác nhận điều khoản',
+			  });
 		});
 
 		return () => {
@@ -265,12 +269,13 @@ export default function HomeDetail() {
 						<Card className='rounded-xl shadow-sm'>
 							<div className='w-full flex justify-between items-center'>
 								<Title level={3}>Chi tiết hợp đồng</Title>
-								<div className='w-[200px]'>{(contract?.status === 'OPEN' || contract?.status === 'PARTY_JOINED')&& <Button
+								<div className='w-[200px]'>{(contract?.status === 'OPEN' || contract?.status === 'PARTY_JOINED')&& user.id === contract?.partyA.id && <Button
 									type='primary'
 									icon={<EditOutlined />}
 									size='large'
 									block
-									onClick={() => setModalEditOpen(true)}
+									onClick={() => {
+										setModalEditOpen(true)}}
 								>
 									Chỉnh sửa HĐ
 								</Button>}</div>
@@ -379,10 +384,8 @@ export default function HomeDetail() {
 											</div>
 
 											<div className='mt-3'>
-												{contract?.partyA?.deposited ? (
+												{contract?.status === 'DEPOSITED' && (
 													<Tag color='green'>Đã cọc tiền</Tag>
-												) : (
-													<Tag color='red'>Chưa cọc</Tag>
 												)}
 											</div>
 										</div>
@@ -465,7 +468,7 @@ export default function HomeDetail() {
 
 											<Divider />
 
-											{contract?.status === 'PARTY_JOINED' ? <Button
+											{(contract?.status === 'PARTY_JOINED' && user.id === contract?.partyB.id) ? <Button
 												type='primary'
 												icon={<ContainerOutlined />}
 												size='large'

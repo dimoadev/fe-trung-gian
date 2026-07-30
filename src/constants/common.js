@@ -19,7 +19,7 @@ export const ColorSessionMapping = {
 
 export const StatusSessionMapping = {
     OPEN: "Đang mở",
-    DEPOSITED: "Đã nhận",
+    DEPOSITED: "Đã cọc tiền",
     CANCELLED: "Đã hủy",
     COMPLETED: "Hoàn toàn",
     PARTY_JOINED: "Đã thêm bên B",
