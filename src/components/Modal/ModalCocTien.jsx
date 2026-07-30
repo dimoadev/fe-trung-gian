@@ -7,7 +7,7 @@ import { createSession, getSessionByCode } from "../../api/money/action";
 import { useAuth } from "../../hook/useAuth";
 import { useMoney } from "../../context/MonetContext";
 
-export default function CocTienModal({ open, onClose, amount, contractId}) {
+export default function CocTienModal({ open, onClose, amount, contractId, callBack}) {
 	const [step, setStep] = useState(1);
 	const [timeLeft, setTimeLeft] = useState(180); // 3 phút
 	const [expired, setExpired] = useState(false);
@@ -48,6 +48,7 @@ export default function CocTienModal({ open, onClose, amount, contractId}) {
 					setContent("Nạp tiền thành công");
 					trigger();
 					setExpired(true);
+					callBack();
 					clearInterval(sessionInterval);
 				}
 			}, 2000);

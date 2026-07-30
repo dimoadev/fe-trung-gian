@@ -593,6 +593,11 @@ export default function HomeDetail() {
 							onClose={() => setDepositModal(false)}
 							amount={Number(contract?.depositPrice)}
 							contractId={id}
+							callBack={() => {
+								socket.emit('update-status-contract', {
+									contractId: id,
+								});
+							}}
 						/>
 
 						{/* ================= Add Party Modal ================= */}
