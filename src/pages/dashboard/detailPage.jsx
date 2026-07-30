@@ -1,64 +1,47 @@
 import {
-	Col,
-	Flex,
-	Pagination,
-	Row,
-	Table,
-	Tabs,
-	Tag,
-	Typography,
-	Card,
+	ContainerOutlined,
+	DollarOutlined,
+	EditOutlined,
+	MailOutlined,
+	PhoneOutlined,
+	PlusOutlined,
+	UserOutlined,
+} from '@ant-design/icons';
+import {
 	Avatar,
 	Button,
+	Card,
+	Col,
 	Divider,
-	Modal,
-	Form,
-	Input,
-	InputNumber,
-	Image,
 	Empty,
+	Form,
+	Image,
+	Input,
+	Modal,
+	Row,
 	Space,
+	Spin,
+	Tag,
+	Typography,
+	message as messageAntd
 } from 'antd';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { GoDot } from 'react-icons/go';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-	getListSpinByTicket,
-	getListSpinByUser,
-	sessionInfo655,
-} from '../../api/spin-session/action';
-import ResultBalls from '../../components/Ball/resultBall';
-import LayoutComponent from '../../components/layout';
-import JoinNextDrawModal from '../../components/Modal/JoinModal';
-import { SpinCustom } from '../../components/SpinCustom';
-import { Prize655 } from '../../constants/common';
-import CountdownTimer from '../../components/CountDown';
-import ResultComponent from '../../components/ResultComponent';
+import { socket } from '../../../socket';
 import {
 	addPartyB,
 	detailContract,
-	getChatGroup,
-	sendChatContract,
-	updateContract,
+	getChatGroup
 } from '../../api/contract/action';
-import {
-	UserOutlined,
-	DollarOutlined,
-	PhoneOutlined,
-	PlusOutlined,
-	MailOutlined,
-	ContainerOutlined,
-	EditOutlined,
-} from '@ant-design/icons';
-import { socket } from '../../../socket';
-import { Spin, message as messageAntd } from 'antd';
 import { findUserByMailPhone } from '../../api/user/action';
-import StepProgress from '../../components/Progress';
-import dayjs from 'dayjs';
-import DepositModal from '../../components/Modal/ModalNapTien';
+import LayoutComponent from '../../components/layout';
+import JoinNextDrawModal from '../../components/Modal/JoinModal';
 import CocTienModal from '../../components/Modal/ModalCocTien';
-import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
 import ConfirmTermModal from '../../components/Modal/ModalConfirmTerm';
+import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
+import StepProgress from '../../components/Progress';
+import { SpinCustom } from '../../components/SpinCustom';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -72,6 +55,7 @@ export default function HomeDetail() {
 	const [addPartyModal, setAddPartyModal] = useState(false);
 	const [currentStep, setCurrentStep] = useState(1);
 	const [modalEditOpen, setModalEditOpen] = useState(false);
+	const [typeConfirm, setTypeConfirm] = useState("CONFIRM_TERM");
 	const [chat, setChat] = useState([]);
 	const { id } = useParams();
 	const user = JSON.parse(localStorage.getItem('axu') || '{}');
@@ -185,8 +169,8 @@ export default function HomeDetail() {
 		{ id: 2, label: 'Thêm bên B', key: 'PARTY_JOINED' },
 		{ id: 3, label: 'Xác nhận điều khoản', key: 'CONFIRM_TERM' },
 		{ id: 4, label: 'Cọc tiền', key: 'DEPOSITED' },
-		{ id: 5, label: 'Chờ gửi hàng', key: 'WAITING_SHIPMENT' },
-		{ id: 6, label: 'Đã gửi', key: 'SHIPPED' },
+		{ id: 5, label: 'Xác nhận gửi hàng', key: 'WAITING_SHIPMENT' },
+		{ id: 6, label: 'Xác nhận nhận hàng', key: 'SHIPPED' },
 		{ id: 7, label: 'Hoàn thành', key: 'COMPLETED' },
 	];
 
@@ -213,7 +197,7 @@ export default function HomeDetail() {
 				'Bên A thực hiện chuyển tiền cọc vào hệ thống để kích hoạt hợp đồng và đảm bảo an toàn giao dịch.',
 		},
 		{
-			title: 'Bước 5: Chờ gửi hàng',
+			title: 'Bước 5: Xác nhận gửi hàng',
 			content:
 				"Đợi bên B chuẩn bị và gửi hàng. Sau khi gửi, bên B sẽ nhấn nút 'Đã gửi hàng' để cập nhật trạng thái.",
 		},
@@ -392,23 +376,25 @@ export default function HomeDetail() {
 									</Space>
 
 									<Divider />
-									{contract?.status === 'CONFIRM_TERM' && user.id === contract?.partyA.id && <Button
+									{user.id === contract?.partyA.id ? (contract?.status === 'CONFIRM_TERM' ? <Button
 										type='primary'
 										icon={<DollarOutlined />}
 										size='large'
 										block
 										onClick={() => setDepositModal(true)}
-										// style={{
-										// 	visibility:
-										// 		!contract?.partyA?.deposited &&
-										// 		user.id === contract?.partyA.id &&
-										// 		contract?.partyBId
-										// 			? 'visible'
-										// 			: 'hidden',
-										// }}
 									>
 										Cọc tiền
-									</Button>}
+									</Button> : contract?.status === 'WAITING_SHIPMENT' ? <Button
+										type='primary'
+										icon={<DollarOutlined />}
+										size='large'
+										block
+										onClick={() => {
+											setTypeConfirm("SHIPPED")
+											setConfirmTermModal(true)}}
+									>
+										Xác nhận nhận hàng
+									</Button> : <></>) : <></>}
 								</Card>
 							</Col>
 
@@ -455,14 +441,6 @@ export default function HomeDetail() {
 															{contract?.partyB.email || 'xxx@mail.com'}
 														</span>
 													</div>
-
-													{/* <div className='mt-3'>
-														{contract?.partyA.deposited ? (
-															<Tag color='green'>Đã cọc tiền</Tag>
-														) : (
-															<Tag color='red'>Chưa cọc</Tag>
-														)}
-													</div> */}
 												</div>
 											</Space>
 
@@ -473,16 +451,20 @@ export default function HomeDetail() {
 												icon={<ContainerOutlined />}
 												size='large'
 												block
-												onClick={() => setConfirmTermModal(true)}
+												onClick={() => {
+													setTypeConfirm("CONFIRM_TERM")
+													setConfirmTermModal(true)}}
 												
 											>
 												Xác nhận điều khoản
-											</Button> : contract?.status === 'WAITING_SHIPMENT' ? <Button
+											</Button> : contract?.status === 'DEPOSITED' ? <Button
 											type='primary'
 											icon={<ContainerOutlined />}
 											size='large'
 											block
-											onClick={() => setDepositModal(true)}
+											onClick={() => {
+												setTypeConfirm("WAITING_SHIPMENT")
+													setConfirmTermModal(true)}}
 											
 										>
 											Xác nhận gửi hàng
@@ -721,6 +703,7 @@ export default function HomeDetail() {
 						contractId: id,
 					});
 				}}
+				type={typeConfirm}
 				/>
 		</div>
 	);
