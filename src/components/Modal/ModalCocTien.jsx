@@ -7,7 +7,7 @@ import { createSession, getSessionByCode } from "../../api/money/action";
 import { useAuth } from "../../hook/useAuth";
 import { useMoney } from "../../context/MonetContext";
 
-export default function CocTienModal({ open, onClose, amount}) {
+export default function CocTienModal({ open, onClose, amount, contractId}) {
 	const [step, setStep] = useState(1);
 	const [timeLeft, setTimeLeft] = useState(180); // 3 phút
 	const [expired, setExpired] = useState(false);
@@ -62,6 +62,7 @@ export default function CocTienModal({ open, onClose, amount}) {
 		const res = await createSession({
 			userId: user.id,
 			amount,
+			contractId
 		});
 
 		if (res?.status === "success") {

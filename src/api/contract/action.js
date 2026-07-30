@@ -54,6 +54,15 @@ export const addPartyB = async (payload) => {
   }
 };
 
+export const updateStatusContract = async (payload) => {
+  const {id, data} = payload;
+  try {
+    return await AppAPIInstance.patch(API.CONTRACT.UPDATE_STATUS(id), data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const update655Running = async (payload) => {
   const {id} = payload;
   try {

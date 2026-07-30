@@ -28,6 +28,7 @@ export const API = {
     CREATE: "/video",
     EDIT: (id) => `/video/${id}`,
     DELETE: (id) => `/video/${id}`,
+    UPDATE_STATUS: (id) => `/contracts/${id}/update-status`,
   },
   CHAT: {
     LIST: "/chat",

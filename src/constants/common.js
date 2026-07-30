@@ -21,7 +21,12 @@ export const StatusSessionMapping = {
     OPEN: "Đang mở",
     DEPOSITED: "Đã nhận",
     CANCELLED: "Đã hủy",
-    COMPLETED: "Hoàn toàn"
+    COMPLETED: "Hoàn toàn",
+    PARTY_JOINED: "Đã thêm bên B",
+    CONFIRM_TERM: "Xác nhận điều khoản",
+    WAITING_SHIPMENT: "Chờ gửi hàng",
+    A_WITHDRAW: "Bên A rút tiền",
+    B_WITHDRAW: "Bên B rút tiền"
 }
 
 export const Prize655 = {

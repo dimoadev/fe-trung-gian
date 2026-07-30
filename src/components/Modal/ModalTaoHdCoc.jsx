@@ -10,15 +10,27 @@ import { Input } from 'antd';
 import { Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
-import { createContract, uploadMedia } from '../../api/contract/action';
+import {
+	createContract,
+	updateContract,
+	uploadMedia,
+} from '../../api/contract/action';
 import { message } from 'antd';
 import { Select } from 'antd';
 import { Typography } from 'antd';
 import { useEffect } from 'react';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
 
-export default function TaoHdCocModal({ open, onClose }) {
+export default function TaoHdCocModal({
+	open,
+	onClose,
+	isEdit = false,
+	dataContract = {},
+}) {
 	const navigate = useNavigate();
 	const [ticketCount, setTicketCount] = useState(null);
 	const [success, setSuccess] = useState(false);
@@ -109,7 +121,6 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 					const res = await uploadMedia({
 						file,
 					});
-					console.log('res', res);
 					return res.url;
 				})
 			);
@@ -122,15 +133,33 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 				terms: values.terms,
 				type: values.type,
 				images: imageUrls,
+				expiredDate: values.expiredDate
 			};
 
-			const res = await createContract(payload);
+			let res = {};
+
+			if (isEdit) {
+				const payloadEdit = {
+					title: values.title,
+					depositPrice: values.depositPrice,
+					description: values.description,
+					terms: values.terms,
+					images: imageUrls,
+					expiredDate: values.expiredDate
+				};
+				res = await updateContract({ id: dataContract.id, data: payloadEdit });
+			} else {
+				res = await createContract(payload);
+			}
 			if (res.status === 'success') {
-				// message.success('Tạo hợp đồng thành công');
-				// onClose();
-				// trigger();
-				setSuccess(true);
-				setIdSucess(res.data.id);
+				if (isEdit) {
+					message.success('Tạo hợp đồng thành công');
+					onClose();
+					trigger();
+				} else {
+					setSuccess(true);
+					setIdSucess(res.data.id);
+				}
 			}
 		} catch (err) {
 			console.error(err);
@@ -174,6 +203,19 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 		},
 	};
 	const type = Form.useWatch('type', form);
+
+	useEffect(() => {
+		if (isEdit && dataContract) {
+			form.setFieldsValue({
+				title: dataContract.title,
+				description: dataContract.description,
+				depositPrice: dataContract.depositPrice,
+				terms: dataContract.terms,
+				expiredDate: dayjs(dataContract.expiredDate)
+			});
+		}
+	}, [dataContract, form]);
+
 	return (
 		<Modal
 			open={open}
@@ -184,39 +226,43 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 		>
 			<div className='relative'>
 				<Form form={form} layout='vertical' onFinish={onFinish}>
-					<Form.Item
-						label='Loại HĐ'
-						name='type'
-						extra={
-							type ? (
-								<Typography.Text
-									type='secondary'
-									style={{
-										marginBottom: 0,
-										fontStyle: 'italic',
-										color: '#d6d6d6',
-									}}
-								>
-									{CONTRACT_TYPES[type].description}
-								</Typography.Text>
-							) : null
-						}
-						rules={[{ required: true, message: 'Vui lòng chọn loại hợp đồng' }]}
-					>
-						<Select
-							placeholder='Chọn loại...'
-							allowClear
-							showSearch
-							optionFilterProp='label'
+					{!isEdit && (
+						<Form.Item
+							label='Loại HĐ'
+							name='type'
+							extra={
+								type ? (
+									<Typography.Text
+										type='secondary'
+										style={{
+											marginBottom: 0,
+											fontStyle: 'italic',
+											color: '#d6d6d6',
+										}}
+									>
+										{CONTRACT_TYPES[type].description}
+									</Typography.Text>
+								) : null
+							}
+							rules={[
+								{ required: true, message: 'Vui lòng chọn loại hợp đồng' },
+							]}
 						>
-							<Select.Option value='SEND_GOOD' label='HĐ cọc mua hàng'>
-								HĐ cọc mua hàng
-							</Select.Option>
-							<Select.Option value='KEEP_SEAT' label='HĐ cọc giữ chỗ'>
-								HĐ cọc giữ chỗ
-							</Select.Option>
-						</Select>
-					</Form.Item>
+							<Select
+								placeholder='Chọn loại...'
+								allowClear
+								showSearch
+								optionFilterProp='label'
+							>
+								<Select.Option value='SEND_GOOD' label='HĐ cọc mua hàng'>
+									HĐ cọc mua hàng
+								</Select.Option>
+								<Select.Option value='KEEP_SEAT' label='HĐ cọc giữ chỗ'>
+									HĐ cọc giữ chỗ
+								</Select.Option>
+							</Select>
+						</Form.Item>
+					)}
 					<Form.Item
 						label='Tiêu đề'
 						name='title'
@@ -241,6 +287,35 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 						/>
 					</Form.Item>
 
+					<Form.Item
+						label='Ngày đến hạn'
+						name='expiredDate'
+						rules={[
+							{ required: true, message: 'Chọn ngày đến hạn' },
+							{
+								validator: (_, value) => {
+									if (!value) return Promise.resolve();
+
+									if (value.startOf('day').isBefore(dayjs().startOf('day'))) {
+										return Promise.reject(
+											new Error('Ngày đến hạn không được nhỏ hơn hôm nay')
+										);
+									}
+
+									return Promise.resolve();
+								},
+							},
+						]}
+					>
+						<DatePicker
+							placeholder='Chọn ngày đến hạn'
+							style={{ width: '100%' }}
+							disabledDate={(current) =>
+								current &&
+								current.startOf('day').isBefore(dayjs().startOf('day'))
+							}
+						/>
+					</Form.Item>
 					<Form.Item label='Mô tả' name='description'>
 						<TextArea rows={4} placeholder='Nhập mô tả...' />
 					</Form.Item>

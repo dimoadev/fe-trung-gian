@@ -48,6 +48,7 @@ import {
 	PlusOutlined,
 	MailOutlined,
 	ContainerOutlined,
+	EditOutlined,
 } from '@ant-design/icons';
 import { socket } from '../../../socket';
 import { Spin } from 'antd';
@@ -56,6 +57,8 @@ import StepProgress from '../../components/Progress';
 import dayjs from 'dayjs';
 import DepositModal from '../../components/Modal/ModalNapTien';
 import CocTienModal from '../../components/Modal/ModalCocTien';
+import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
+import ConfirmTermModal from '../../components/Modal/ModalConfirmTerm';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -65,13 +68,19 @@ export default function HomeDetail() {
 	const [modalJoinOpen, setModalJoinOpen] = useState(false);
 	const [contract, setContract] = useState(null);
 	const [depositModal, setDepositModal] = useState(false);
+	const [confirmTermModal, setConfirmTermModal] = useState(false);
 	const [addPartyModal, setAddPartyModal] = useState(false);
 	const [currentStep, setCurrentStep] = useState(1);
+	const [modalEditOpen, setModalEditOpen] = useState(false);
 	const [chat, setChat] = useState([]);
 	const { id } = useParams();
 	const user = JSON.parse(localStorage.getItem('axu') || '{}');
 	function onCloseModalJoin() {
 		setModalJoinOpen(false);
+	}
+
+	function onCloseModalEdit() {
+		setModalEditOpen(false);
 	}
 
 	async function getDetail() {
@@ -101,20 +110,24 @@ export default function HomeDetail() {
 
 	useEffect(() => {
 		socket.emit('join-room', {
-			contractId: Number(id),
+			contractId: id,
 		});
 
 		return () => {
 			socket.emit('leave-room', {
-				contractId: Number(id),
+				contractId: id,
 			});
 		};
 	}, []);
 
 	useEffect(() => {
 		socket.on('new-message', (message) => {
-			console.log(message, 'message');
 			setChat((prev) => [...prev, message]);
+		});
+
+		socket.on('update-status-success', () => {
+			getDetail();
+			getDetailChatGroup();
 		});
 
 		return () => {
@@ -127,11 +140,9 @@ export default function HomeDetail() {
 			const progress = JSON.parse(contract.progress.replace(/'/g, '"'));
 			const stepKey = progress[progress.length - 1];
 			const stepIndex = steps.find((step) => step.key === stepKey);
-			console.log(progress, stepKey, stepIndex, 'stepIndex');
 			setCurrentStep(stepIndex.id);
 		}
 	}, [contract]);
-
 
 	const [keyword, setKeyword] = useState('');
 	const [loadingUser, setLoadingUser] = useState(false);
@@ -168,10 +179,11 @@ export default function HomeDetail() {
 	const steps = [
 		{ id: 1, label: 'Tạo HD', key: 'OPEN' },
 		{ id: 2, label: 'Thêm bên B', key: 'PARTY_JOINED' },
-		{ id: 3, label: 'Cọc tiền', key: 'DEPOSITED' },
-		{ id: 4, label: 'Chờ gửi hàng', key: 'WAITING_SHIPMENT' },
-		{ id: 5, label: 'Đã gửi', key: 'SHIPPED' },
-		{ id: 6, label: 'Hoàn thành', key: 'COMPLETED' },
+		{ id: 3, label: 'Xác nhận điều khoản', key: 'CONFIRM_TERM' },
+		{ id: 4, label: 'Cọc tiền', key: 'DEPOSITED' },
+		{ id: 5, label: 'Chờ gửi hàng', key: 'WAITING_SHIPMENT' },
+		{ id: 6, label: 'Đã gửi', key: 'SHIPPED' },
+		{ id: 7, label: 'Hoàn thành', key: 'COMPLETED' },
 	];
 
 	// Object chứa nội dung mô tả chi tiết cho từng bước giúp hướng dẫn người dùng
@@ -187,17 +199,22 @@ export default function HomeDetail() {
 				'Bên B kiểm tra các thông tin hợp đồng, chat với bên A để chỉnh sửa trước khi tiến hành cọc tiền.',
 		},
 		{
-			title: 'Bước 3: Tiến hành cọc tiền',
+			title: 'Bước 3: Xác nhận điều khoản',
+			content:
+				'Bên B đọc và xác nhận điều khoản, trao đổi nội dung dưới khung chat để bên A cập nhật nội dung hợp đồng, sau khi bên B xác nhận điều khoản thì hợp đồng sẽ không thể chỉnh sửa được nữa',
+		},
+		{
+			title: 'Bước 4: Tiến hành cọc tiền',
 			content:
 				'Bên A thực hiện chuyển tiền cọc vào hệ thống để kích hoạt hợp đồng và đảm bảo an toàn giao dịch.',
 		},
 		{
-			title: 'Bước 4: Chờ gửi hàng',
+			title: 'Bước 5: Chờ gửi hàng',
 			content:
 				"Đợi bên B chuẩn bị và gửi hàng. Sau khi gửi, bên B sẽ nhấn nút 'Đã gửi hàng' để cập nhật trạng thái.",
 		},
 		{
-			title: 'Bước 5: Xác nhận nhận hàng & Rút tiền',
+			title: 'Bước 6: Xác nhận nhận hàng & Rút tiền',
 			content: (
 				<>
 					Sau khi bên A nhận được hàng thì cập nhật trạng thái đã nhận, bên B sẽ
@@ -213,7 +230,7 @@ export default function HomeDetail() {
 			),
 		},
 		{
-			title: 'Bước 6: Hoàn thành hợp đồng',
+			title: 'Bước 7: Hoàn thành hợp đồng',
 			content:
 				'Sau khi bên A đã nhận hàng và bên B đã nhận được tiền, hợp đồng chính thức khép lại thành công.',
 		},
@@ -246,7 +263,18 @@ export default function HomeDetail() {
 						{/* ================= HEADER ================= */}
 
 						<Card className='rounded-xl shadow-sm'>
-							<Title level={3}>Chi tiết hợp đồng</Title>
+							<div className='w-full flex justify-between items-center'>
+								<Title level={3}>Chi tiết hợp đồng</Title>
+								<div className='w-[200px]'>{(contract?.status === 'OPEN' || contract?.status === 'PARTY_JOINED')&& <Button
+									type='primary'
+									icon={<EditOutlined />}
+									size='large'
+									block
+									onClick={() => setModalEditOpen(true)}
+								>
+									Chỉnh sửa HĐ
+								</Button>}</div>
+							</div>
 
 							<Divider />
 
@@ -264,7 +292,7 @@ export default function HomeDetail() {
 										<Text type='secondary'>Loại hợp đồng</Text>
 
 										<Paragraph className='mt-2 whitespace-pre-wrap'>
-											{CONTRACT_TYPES[contract?.type]?.description}
+											{CONTRACT_TYPES[contract?.type]?.label}
 										</Paragraph>
 									</div>
 
@@ -275,6 +303,14 @@ export default function HomeDetail() {
 											{Number(contract?.depositPrice)?.toLocaleString('en-US')}{' '}
 											VNĐ
 										</div>
+									</div>
+
+									<div className='mt-6'>
+										<Text type='secondary'>Ngày đến hạn</Text>
+
+										<Paragraph className='mt-2 whitespace-pre-wrap'>
+											{dayjs(contract?.expiredDate).format('DD/MM/YYYY')}
+										</Paragraph>
 									</div>
 
 									<div className='mt-6'>
@@ -318,8 +354,8 @@ export default function HomeDetail() {
 							{/* ================= PARTY A ================= */}
 
 							<Col xs={24} lg={12}>
-								<Card title='BÊN A' className='rounded-xl shadow-sm'>
-									<Space align='start'>
+								<Card title='BÊN A' className='rounded-xl shadow-sm h-[300px]'>
+									<Space align='start' className='h-[110px]'>
 										<Avatar size={72} icon={<UserOutlined />} />
 
 										<div>
@@ -353,29 +389,30 @@ export default function HomeDetail() {
 									</Space>
 
 									<Divider />
-									<Button
+									{contract?.status === 'CONFIRM_TERM' && user.id === contract?.partyA.id && <Button
 										type='primary'
 										icon={<DollarOutlined />}
 										size='large'
 										block
 										onClick={() => setDepositModal(true)}
-										style={{
-											visibility:
-												!contract?.partyA?.deposited &&
-												user.id === contract?.partyA.id
-													? 'visible'
-													: 'hidden',
-										}}
+										// style={{
+										// 	visibility:
+										// 		!contract?.partyA?.deposited &&
+										// 		user.id === contract?.partyA.id &&
+										// 		contract?.partyBId
+										// 			? 'visible'
+										// 			: 'hidden',
+										// }}
 									>
 										Cọc tiền
-									</Button>
+									</Button>}
 								</Card>
 							</Col>
 
 							{/* ================= PARTY B ================= */}
 
 							<Col xs={24} lg={12}>
-								<Card title='BÊN B' className='rounded-xl shadow-sm'>
+								<Card title='BÊN B' className='rounded-xl shadow-sm h-[300px]'>
 									{!contract?.partyB ? (
 										<div className='py-1'>
 											<Empty description='Chưa có bên B' />
@@ -393,7 +430,7 @@ export default function HomeDetail() {
 										</div>
 									) : (
 										<>
-											<Space align='start'>
+											<Space align='start' className='h-[110px]'>
 												<Avatar size={72} icon={<UserOutlined />} />
 
 												<div>
@@ -428,21 +465,25 @@ export default function HomeDetail() {
 
 											<Divider />
 
-											<Button
+											{contract?.status === 'PARTY_JOINED' ? <Button
 												type='primary'
 												icon={<ContainerOutlined />}
 												size='large'
 												block
-												onClick={() => setDepositModal(true)}
-												style={{
-													visibility:
-														contract?.partyB && user.id === contract?.partyB.id
-															? 'visible'
-															: 'hidden',
-												}}
+												onClick={() => setConfirmTermModal(true)}
+												
 											>
-												Gửi hàng
-											</Button>
+												Xác nhận điều khoản
+											</Button> : contract?.status === 'WAITING_SHIPMENT' ? <Button
+											type='primary'
+											icon={<ContainerOutlined />}
+											size='large'
+											block
+											onClick={() => setDepositModal(true)}
+											
+										>
+											Xác nhận gửi hàng
+										</Button> : <></>}
 										</>
 									)}
 								</Card>
@@ -454,15 +495,15 @@ export default function HomeDetail() {
 							title='Tiến trình hợp đồng'
 						>
 							<div className='mb-6 p-4 bg-slate-50 border border-slate-100 rounded-xl transition-all duration-300'>
-								{stepDescriptions.map((item) => (
-									<>
+								{stepDescriptions.map((item, index) => (
+									<div key={index}>
 										<h4 className='text-sm font-bold text-slate-800 mb-1'>
 											{item.title}
 										</h4>
 										<div className='text-xs text-slate-600 leading-relaxed'>
 											{item.content}
 										</div>
-									</>
+									</div>
 								))}
 							</div>
 							<StepProgress steps={steps} currentStep={currentStep} />
@@ -551,7 +592,7 @@ export default function HomeDetail() {
 									onClick={async () => {
 										if (!message) return;
 										socket.emit('send-message', {
-											contractId: Number(id),
+											contractId: id,
 											message,
 										});
 										setMessage('');
@@ -562,7 +603,12 @@ export default function HomeDetail() {
 							</div>
 						</Card>
 						{/* ================= Deposit Modal ================= */}
-						<CocTienModal  open={depositModal} onClose={() => setDepositModal(false)} amount={Number(contract?.depositPrice)}/>
+						<CocTienModal
+							open={depositModal}
+							onClose={() => setDepositModal(false)}
+							amount={Number(contract?.depositPrice)}
+							contractId={id}
+						/>
 
 						{/* ================= Add Party Modal ================= */}
 
@@ -662,6 +708,17 @@ export default function HomeDetail() {
 				</div>
 			</LayoutComponent>
 			<JoinNextDrawModal open={modalJoinOpen} onClose={onCloseModalJoin} />
+			<TaoHdCocModal open={modalEditOpen} onClose={onCloseModalEdit} isEdit={true} dataContract={contract}  />
+			<ConfirmTermModal 
+				open={confirmTermModal}
+				onClose={() => setConfirmTermModal(false)}
+				contract={contract} 
+				callBack={() => {
+					socket.emit('update-status-contract', {
+						contractId: id,
+					});
+				}}
+				/>
 		</div>
 	);
 }
