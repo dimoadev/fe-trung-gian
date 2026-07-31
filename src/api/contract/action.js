@@ -63,6 +63,15 @@ export const updateStatusContract = async (payload) => {
   }
 };
 
+export const withdrawContract = async (payload) => {
+  const {id} = payload;
+  try {
+    return await AppAPIInstance.patch(API.CONTRACT.WITHDRAW(id));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const update655Running = async (payload) => {
   const {id} = payload;
   try {

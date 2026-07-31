@@ -1,20 +1,26 @@
 import { Modal } from 'antd';
 import React from 'react';
-import { updateStatusContract } from '../../api/contract/action';
+import { updateStatusContract, withdrawContract } from '../../api/contract/action';
 
 export default function ConfirmTermModal({ open, onClose, contract, callBack, type }) {
 
 	const onSubmit = async () => {
-		const progress = JSON.parse(contract.progress.replace(/'/g, '"'));
-		progress.push(type);
-		const res = await updateStatusContract({
-			id: contract.id,
-			data: {
-				status: type,
-				progress: `['${progress.join("','")}']`,
-			},
-		});
-
+        let res = {};
+		if (type === "B_WITHDRAW") {
+			res = await withdrawContract({
+				id: contract.id,
+			});
+		} else {
+			const progress = JSON.parse(contract.progress.replace(/'/g, '"'));
+			progress.push(type);
+			res = await updateStatusContract({
+				id: contract.id,
+				data: {
+					status: type,
+					progress: `['${progress.join("','")}']`,
+				},
+			});
+		}
 		if (res.status === 'success') {
 			onClose();
 			callBack();
@@ -23,7 +29,8 @@ export default function ConfirmTermModal({ open, onClose, contract, callBack, ty
 const CONTENT = {
 	CONFIRM_TERM: {title: "Xác nhận điều khoản", description: "Sau khi xác nhận điều khoản, không thể chỉnh sửa hợp đồng <br /> Bên A sẽ tiến hành cọc tiền sau bước này"},
 	WAITING_SHIPMENT: {title: "Xác nhận gửi hàng", description: "Sau khi xác nhận gửi hàng, yêu cầu bên A kiểm tra nhận hàng rồi xác nhận nhận hàng <br /> Sau khi bên A xác nhận đã nhận hàng bạn sẽ được rút tiền cọc về tài khoản"},
-	SHIPPED: {title: "Xác nhận nhận hàng", description: "Sau khi xác nhận nhận hàng <br /> Bên B sẽ được rút tiền cọc về tài khoản"}
+	SHIPPED: {title: "Xác nhận nhận hàng", description: "Sau khi xác nhận nhận hàng <br /> Bên B sẽ được rút tiền cọc về tài khoản"},
+	B_WITHDRAW: {title: "Xác nhận rút tiền", description: "Sau khi xác nhận <br /> Tiền cọc sẽ về tài khoản của bạn <br /> Bạn cần vào mục nạp rút để rút về tk ngân hàng của mình "}
 }
 	return (
 		<Modal

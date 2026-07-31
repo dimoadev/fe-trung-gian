@@ -29,6 +29,8 @@ export const API = {
     EDIT: (id) => `/video/${id}`,
     DELETE: (id) => `/video/${id}`,
     UPDATE_STATUS: (id) => `/contracts/${id}/update-status`,
+    WITHDRAW: (id) => `/contracts/${id}/withdraw-contract`,
+
   },
   CHAT: {
     LIST: "/chat",

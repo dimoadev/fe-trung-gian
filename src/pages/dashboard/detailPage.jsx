@@ -23,7 +23,7 @@ import {
 	Spin,
 	Tag,
 	Typography,
-	message as messageAntd
+	message as messageAntd,
 } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ import { socket } from '../../../socket';
 import {
 	addPartyB,
 	detailContract,
-	getChatGroup
+	getChatGroup,
 } from '../../api/contract/action';
 import { findUserByMailPhone } from '../../api/user/action';
 import LayoutComponent from '../../components/layout';
@@ -55,7 +55,7 @@ export default function HomeDetail() {
 	const [addPartyModal, setAddPartyModal] = useState(false);
 	const [currentStep, setCurrentStep] = useState(1);
 	const [modalEditOpen, setModalEditOpen] = useState(false);
-	const [typeConfirm, setTypeConfirm] = useState("CONFIRM_TERM");
+	const [typeConfirm, setTypeConfirm] = useState('CONFIRM_TERM');
 	const [chat, setChat] = useState([]);
 	const { id } = useParams();
 	const user = JSON.parse(localStorage.getItem('axu') || '{}');
@@ -104,6 +104,13 @@ export default function HomeDetail() {
 		};
 	}, [id]);
 
+	const typeSuccess = {
+		CONFIRM_TERM: 'Đã xác nhận điều khoản',
+		WAITING_SHIPMENT: 'Đã xác nhận gửi hàng',
+		DEPOSITED: 'Đã cọc',
+		SHIPPED: 'Đã nhận hàng',
+		B_WITHDRAW: 'Rút tiền về tk thành công!'
+	};
 	useEffect(() => {
 		socket.on('new-message', (message) => {
 			setChat((prev) => [...prev, message]);
@@ -114,8 +121,8 @@ export default function HomeDetail() {
 			getDetailChatGroup();
 			messageAntd.open({
 				type: 'success',
-				content: 'Đã xác nhận điều khoản',
-			  });
+				content: typeSuccess[type],
+			});
 		});
 
 		return () => {
@@ -253,16 +260,23 @@ export default function HomeDetail() {
 						<Card className='rounded-xl shadow-sm'>
 							<div className='w-full flex justify-between items-center'>
 								<Title level={3}>Chi tiết hợp đồng</Title>
-								<div className='w-[200px]'>{(contract?.status === 'OPEN' || contract?.status === 'PARTY_JOINED')&& user.id === contract?.partyA.id && <Button
-									type='primary'
-									icon={<EditOutlined />}
-									size='large'
-									block
-									onClick={() => {
-										setModalEditOpen(true)}}
-								>
-									Chỉnh sửa HĐ
-								</Button>}</div>
+								<div className='w-[200px]'>
+									{(contract?.status === 'OPEN' ||
+										contract?.status === 'PARTY_JOINED') &&
+										user.id === contract?.partyA.id && (
+											<Button
+												type='primary'
+												icon={<EditOutlined />}
+												size='large'
+												block
+												onClick={() => {
+													setModalEditOpen(true);
+												}}
+											>
+												Chỉnh sửa HĐ
+											</Button>
+										)}
+								</div>
 							</div>
 
 							<Divider />
@@ -376,25 +390,36 @@ export default function HomeDetail() {
 									</Space>
 
 									<Divider />
-									{user.id === contract?.partyA.id ? (contract?.status === 'CONFIRM_TERM' ? <Button
-										type='primary'
-										icon={<DollarOutlined />}
-										size='large'
-										block
-										onClick={() => setDepositModal(true)}
-									>
-										Cọc tiền
-									</Button> : contract?.status === 'WAITING_SHIPMENT' ? <Button
-										type='primary'
-										icon={<DollarOutlined />}
-										size='large'
-										block
-										onClick={() => {
-											setTypeConfirm("SHIPPED")
-											setConfirmTermModal(true)}}
-									>
-										Xác nhận nhận hàng
-									</Button> : <></>) : <></>}
+									{user.id === contract?.partyA.id ? (
+										contract?.status === 'CONFIRM_TERM' ? (
+											<Button
+												type='primary'
+												icon={<DollarOutlined />}
+												size='large'
+												block
+												onClick={() => setDepositModal(true)}
+											>
+												Cọc tiền
+											</Button>
+										) : contract?.status === 'WAITING_SHIPMENT' ? (
+											<Button
+												type='primary'
+												icon={<DollarOutlined />}
+												size='large'
+												block
+												onClick={() => {
+													setTypeConfirm('SHIPPED');
+													setConfirmTermModal(true);
+												}}
+											>
+												Xác nhận nhận hàng
+											</Button>
+										) : (
+											<></>
+										)
+									) : (
+										<></>
+									)}
 								</Card>
 							</Col>
 
@@ -446,29 +471,51 @@ export default function HomeDetail() {
 
 											<Divider />
 
-											{(contract?.status === 'PARTY_JOINED' && user.id === contract?.partyB.id) ? <Button
-												type='primary'
-												icon={<ContainerOutlined />}
-												size='large'
-												block
-												onClick={() => {
-													setTypeConfirm("CONFIRM_TERM")
-													setConfirmTermModal(true)}}
-												
-											>
-												Xác nhận điều khoản
-											</Button> : contract?.status === 'DEPOSITED' ? <Button
-											type='primary'
-											icon={<ContainerOutlined />}
-											size='large'
-											block
-											onClick={() => {
-												setTypeConfirm("WAITING_SHIPMENT")
-													setConfirmTermModal(true)}}
-											
-										>
-											Xác nhận gửi hàng
-										</Button> : <></>}
+											{user.id === contract?.partyB.id ? (
+												contract?.status === 'PARTY_JOINED' ? (
+													<Button
+														type='primary'
+														icon={<ContainerOutlined />}
+														size='large'
+														block
+														onClick={() => {
+															setTypeConfirm('CONFIRM_TERM');
+															setConfirmTermModal(true);
+														}}
+													>
+														Xác nhận điều khoản
+													</Button>
+												) : contract?.status === 'DEPOSITED' ? (
+													<Button
+														type='primary'
+														icon={<ContainerOutlined />}
+														size='large'
+														block
+														onClick={() => {
+															setTypeConfirm('WAITING_SHIPMENT');
+															setConfirmTermModal(true);
+														}}
+													>
+														Xác nhận gửi hàng
+													</Button>
+												) : contract?.status === 'SHIPPED' ? 
+													<Button
+														type='primary'
+														icon={<ContainerOutlined />}
+														size='large'
+														block
+														onClick={() => {
+															setTypeConfirm('B_WITHDRAW');
+															setConfirmTermModal(true);
+														}}
+													>
+														Rút tiền cọc về TK
+													</Button> : (
+													<></>
+												)
+											) : (
+												<></>
+											)}
 										</>
 									)}
 								</Card>
@@ -698,18 +745,30 @@ export default function HomeDetail() {
 				</div>
 			</LayoutComponent>
 			<JoinNextDrawModal open={modalJoinOpen} onClose={onCloseModalJoin} />
-			<TaoHdCocModal open={modalEditOpen} onClose={onCloseModalEdit} isEdit={true} dataContract={contract}  />
-			<ConfirmTermModal 
+			<TaoHdCocModal
+				open={modalEditOpen}
+				onClose={onCloseModalEdit}
+				isEdit={true}
+				dataContract={contract}
+			/>
+			<ConfirmTermModal
 				open={confirmTermModal}
 				onClose={() => setConfirmTermModal(false)}
-				contract={contract} 
+				contract={contract}
 				callBack={() => {
-					socket.emit('update-status-contract', {
-						contractId: id,
-					});
+					if (type === 'B_WITHDRAW') {
+						messageAntd.open({
+							type: 'success',
+							content: typeSuccess[type],
+						});
+					} else {
+						socket.emit('update-status-contract', {
+							contractId: id,
+						});
+					}
 				}}
 				type={typeConfirm}
-				/>
+			/>
 		</div>
 	);
 }
