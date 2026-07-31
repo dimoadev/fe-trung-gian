@@ -5,26 +5,30 @@ import { updateStatusContract, withdrawContract } from '../../api/contract/actio
 export default function ConfirmTermModal({ open, onClose, contract, callBack, type }) {
 
 	const onSubmit = async () => {
-        let res = {};
 		if (type === "B_WITHDRAW") {
-			res = await withdrawContract({
+			const res = await withdrawContract({
 				id: contract.id,
 			});
+			if (res.status === 'success') {
+				onClose();
+				callBack();
+			}
 		} else {
 			const progress = JSON.parse(contract.progress.replace(/'/g, '"'));
 			progress.push(type);
-			res = await updateStatusContract({
+			const res = await updateStatusContract({
 				id: contract.id,
 				data: {
 					status: type,
 					progress: `['${progress.join("','")}']`,
 				},
 			});
+			if (res.status === 'success') {
+				onClose();
+				callBack();
+			}
 		}
-		if (res.status === 'success') {
-			onClose();
-			callBack();
-		}
+		
 	};
 const CONTENT = {
 	CONFIRM_TERM: {title: "Xác nhận điều khoản", description: "Sau khi xác nhận điều khoản, không thể chỉnh sửa hợp đồng <br /> Bên A sẽ tiến hành cọc tiền sau bước này"},

@@ -17,9 +17,9 @@ const StepProgress = ({ steps , currentStep = 1 }) => {
             if (step.id === 1) bgColor = 'bg-lime-300 text-lime-800';
             if (step.id === 2) bgColor = 'bg-lime-400 text-lime-900';
             if (step.id === 3) bgColor = 'bg-lime-500 text-lime-900';
-            if (step.id === 3) bgColor = 'bg-lime-600 text-lime-900';
-            if (step.id === 3) bgColor = 'bg-lime-700 text-lime-900';
-            if (step.id === 3) bgColor = 'bg-lime-800 text-lime-900';
+            if (step.id === 4) bgColor = 'bg-lime-600 text-lime-900';
+            if (step.id === 5) bgColor = 'bg-lime-700 text-lime-900';
+            if (step.id === 6) bgColor = 'bg-lime-800 text-lime-900';
           } else if (isCurrent) {
             bgColor = 'bg-emerald-600 text-white'; // Bước hiện tại (UPLOAD PHOTO)
           }

@@ -756,10 +756,10 @@ export default function HomeDetail() {
 				onClose={() => setConfirmTermModal(false)}
 				contract={contract}
 				callBack={() => {
-					if (type === 'B_WITHDRAW') {
+					if (typeConfirm === 'B_WITHDRAW') {
 						messageAntd.open({
 							type: 'success',
-							content: typeSuccess[type],
+							content: typeSuccess[typeConfirm],
 						});
 					} else {
 						socket.emit('update-status-contract', {
