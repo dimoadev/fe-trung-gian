@@ -102,7 +102,7 @@ export default function HomeDetail() {
 				contractId: id,
 			});
 		};
-	}, []);
+	}, [id]);
 
 	useEffect(() => {
 		socket.on('new-message', (message) => {
