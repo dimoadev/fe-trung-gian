@@ -116,12 +116,12 @@ export default function HomeDetail() {
 			setChat((prev) => [...prev, message]);
 		});
 
-		socket.on('update-status-success', () => {
+		socket.on('update-status-success', (message) => {
 			getDetail();
 			getDetailChatGroup();
 			messageAntd.open({
 				type: 'success',
-				content: typeSuccess[typeConfirm],
+				content: typeSuccess[message.type]
 			});
 		});
 
@@ -343,7 +343,7 @@ export default function HomeDetail() {
 										{contract?.images?.map((img) => (
 											<Image
 												key={img}
-												src={`https://api.trunggian.io.vn${img}`}
+												src={`https://api.trunggian.io.vn${img.url}`}
 												className='rounded-lg object-cover'
 											/>
 										))}
@@ -644,6 +644,7 @@ export default function HomeDetail() {
 							callBack={() => {
 								socket.emit('update-status-contract', {
 									contractId: id,
+									type: typeConfirm
 								});
 							}}
 						/>
@@ -769,6 +770,7 @@ export default function HomeDetail() {
 					} else {
 						socket.emit('update-status-contract', {
 							contractId: id,
+							type: typeConfirm
 						});
 					}
 				}}

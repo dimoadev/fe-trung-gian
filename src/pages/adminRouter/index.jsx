@@ -6,7 +6,7 @@ const AdminRoute = ({ children }) => {
   const user = JSON.parse(u || "{}");
 
 
-  if (!token || user?.id !== 1 || user?.email !== "hoanghoai12sh@gmail.com") {
+  if (!token || user?.email !== "hoanghoai12sh@gmail.com") {
     return <Navigate to="/auth/login" replace />;
   }
 
