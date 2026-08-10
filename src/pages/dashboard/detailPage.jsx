@@ -121,12 +121,13 @@ export default function HomeDetail() {
 			getDetailChatGroup();
 			messageAntd.open({
 				type: 'success',
-				content: typeSuccess[type],
+				content: typeSuccess[typeConfirm],
 			});
 		});
 
 		return () => {
 			socket.off('new-message');
+			socket.off('update-status-success');
 		};
 	}, []);
 
@@ -342,7 +343,7 @@ export default function HomeDetail() {
 										{contract?.images?.map((img) => (
 											<Image
 												key={img}
-												src={img}
+												src={`https://api.trunggian.io.vn${img}`}
 												className='rounded-lg object-cover'
 											/>
 										))}
@@ -682,6 +683,10 @@ export default function HomeDetail() {
 									setKeyword('');
 									setUserResult(null);
 									setSelectedUser(null);
+									messageAntd.open({
+										type: 'success',
+										content: "Thêm bên B thành công!",
+									});
 								}
 							}}
 						>
