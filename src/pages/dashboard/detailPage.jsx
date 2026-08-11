@@ -642,9 +642,10 @@ export default function HomeDetail() {
 							amount={Number(contract?.depositPrice)}
 							contractId={id}
 							callBack={() => {
+								setTypeConfirm('DEPOSITED');
 								socket.emit('update-status-contract', {
 									contractId: id,
-									type: typeConfirm
+									type: 'DEPOSITED'
 								});
 							}}
 						/>

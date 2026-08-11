@@ -21,10 +21,11 @@ export const StatusSessionMapping = {
     OPEN: "Đang mở",
     DEPOSITED: "Đã cọc tiền",
     CANCELLED: "Đã hủy",
-    COMPLETED: "Hoàn toàn",
+    COMPLETED: "Hoàn thành",
     PARTY_JOINED: "Đã thêm bên B",
     CONFIRM_TERM: "Xác nhận điều khoản",
     WAITING_SHIPMENT: "Chờ gửi hàng",
+    SHIPPED: "Đã gửi hàng",
     A_WITHDRAW: "Bên A rút tiền",
     B_WITHDRAW: "Bên B rút tiền"
 }
