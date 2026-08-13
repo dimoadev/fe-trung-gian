@@ -8,7 +8,7 @@ export default function CustomSelect({ options, ...rest }) {
 			styles={{
 				control: (base, state) => ({
 					...base,
-					backgroundColor: "#232623",
+					backgroundColor: "#141619",
 					color: "#fff",
 					borderColor: state.isFocused ? "#22d3ee" : "#d1d5db", // focus cyan
 					boxShadow: state.isFocused ? "0 0 0 1px rgb(90, 219, 239)" : "none",
@@ -17,7 +17,7 @@ export default function CustomSelect({ options, ...rest }) {
 				menu: (base) => ({
 					...base,
 					zIndex: 50,
-					backgroundColor: "#232623",
+					backgroundColor: "#141619",
 					color: "#fff",
 				}),
 				option: (base, state) => ({
@@ -26,11 +26,11 @@ export default function CustomSelect({ options, ...rest }) {
 						? "#3A3F3A" // 🌈 màu khi hover
 						: state.isSelected
 						? "#2B2F2B" // 🌈 màu khi chọn
-						: "#232623", // 🌈 màu mặc định
+						: "#141619", // 🌈 màu mặc định
 					color: "#fff",
 					cursor: "pointer",
 					"&:active": {
-						backgroundColor: "#232623",
+						backgroundColor: "#141619",
 					},
 				}),
 				singleValue: (base) => ({

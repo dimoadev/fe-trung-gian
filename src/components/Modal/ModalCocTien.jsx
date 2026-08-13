@@ -1,23 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button } from "antd";
-import { useForm, Controller } from "react-hook-form";
-import { NumericFormat } from "react-number-format";
-import { GrNext } from "react-icons/gr";
-import { createSession, getSessionByCode } from "../../api/money/action";
-import { useAuth } from "../../hook/useAuth";
-import { useMoney } from "../../context/MonetContext";
+import React, { useState, useEffect } from 'react';
+import { Modal, Button } from 'antd';
+import { useForm, Controller } from 'react-hook-form';
+import { NumericFormat } from 'react-number-format';
+import { GrNext } from 'react-icons/gr';
+import { createSession, getSessionByCode } from '../../api/money/action';
+import { useAuth } from '../../hook/useAuth';
+import { useMoney } from '../../context/MonetContext';
 
-export default function CocTienModal({ open, onClose, amount, contractId, callBack}) {
+export default function CocTienModal({
+	open,
+	onClose,
+	amount,
+	contractId,
+	callBack,
+}) {
 	const [step, setStep] = useState(1);
 	const [timeLeft, setTimeLeft] = useState(180); // 3 phút
 	const [expired, setExpired] = useState(false);
 	const [content, setContent] = useState(
-		"Mã đã hết hạn. Xin hãy tạo lại phiên giao dịch khác."
+		'Mã đã hết hạn. Xin hãy tạo lại phiên giao dịch khác.'
 	);
 
 	const { trigger } = useMoney();
 
-	const [code, setCode] = useState("");
+	const [code, setCode] = useState('');
 	const { control, handleSubmit, reset } = useForm({
 		defaultValues: { amount: 0 },
 	});
@@ -44,8 +50,8 @@ export default function CocTienModal({ open, onClose, amount, contractId, callBa
 		if (step === 2 && code && !expired) {
 			const sessionInterval = setInterval(async () => {
 				const res = await getSessionByCode(code);
-				if (res?.data?.status === "SUCCESS") {
-					setContent("Nạp tiền thành công");
+				if (res?.data?.status === 'SUCCESS') {
+					setContent('Nạp tiền thành công');
 					trigger();
 					setExpired(true);
 					callBack();
@@ -63,10 +69,10 @@ export default function CocTienModal({ open, onClose, amount, contractId, callBa
 		const res = await createSession({
 			userId: user.id,
 			amount,
-			contractId
+			contractId,
 		});
 
-		if (res?.status === "success") {
+		if (res?.status === 'success') {
 			setStep(2);
 			setCode(res.data.code);
 		}
@@ -94,31 +100,36 @@ export default function CocTienModal({ open, onClose, amount, contractId, callBa
 			footer={false}
 			centered
 			title={
-				<div className="flex flex-col">
-					<span className="text-lg font-semibold">Nạp tiền</span>
-					<div className="flex items-center gap-1 mt-2 text-sm text-white">
-						<span className={step >= 1 ? "text-cyan-400 font-medium" : ""}>
+				<div className='flex flex-col'>
+					<span className='text-lg font-semibold'>Nạp tiền</span>
+					<div className='flex items-center gap-1 mt-2 text-sm text-white'>
+						<span className={step >= 1 ? 'text-cyan-400 font-medium' : ''}>
 							Bước 1
 						</span>
 						<span>
 							<GrNext />
 						</span>
-						<span className={step === 2 ? "text-cyan-400 font-medium" : ""}>
+						<span className={step === 2 ? 'text-cyan-400 font-medium' : ''}>
 							Bước 2
 						</span>
 					</div>
 				</div>
 			}
 		>
-			<div className="relative">
+			<div className='relative'>
 				{/* Step 1 */}
 				{step === 1 && (
-					<form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
-						<label className="block text-sm font-medium text-gray-700">
-							Số tiền cọc là <span className="text-cyan-400 font-semibold">{Number(amount).toLocaleString('en-US')}</span> VNĐ
-
+					<form onSubmit={handleSubmit(onSubmit)} className='space-y-4 mt-4'>
+						<label className='block text-sm font-medium text-gray-700'>
+							Số tiền cọc là{' '}
+							<span className='text-cyan-400 font-semibold'>
+								{Number(amount).toLocaleString('en-US')}
+							</span>{' '}
+							VNĐ
 						</label>
-						<p className="text-sm text-white italic">Bấm tiếp tục để quét mã chuyển khoản</p>
+						<p className='text-sm text-white italic'>
+							Bấm tiếp tục để quét mã chuyển khoản
+						</p>
 						{/* <Controller
 							name="amount"
 							control={control}
@@ -158,10 +169,10 @@ export default function CocTienModal({ open, onClose, amount, contractId, callBa
 								</div>
 							)}
 						/> */}
-						<div className="flex justify-end">
+						<div className='flex justify-end'>
 							<button
-								className="rounded-md bg-lime-400 hover:bg-lime-300 px-2 py-1 text-white"
-								type="submit"
+								className='rounded-md bg-cyan-400 hover:bg-cyan-300 px-2 py-1 text-white'
+								type='submit'
 							>
 								Tiếp tục
 							</button>
@@ -171,13 +182,13 @@ export default function CocTienModal({ open, onClose, amount, contractId, callBa
 
 				{/* Step 2 */}
 				{step === 2 && (
-					<div className="flex flex-col items-center justify-center space-y-4 mt-4">
+					<div className='flex flex-col items-center justify-center space-y-4 mt-4'>
 						{/* <QRCode value={`deposit:${amount}`} size={180} /> */}
-						<img src={renderQr()} width="180px" height="180px" alt="qr" />
-						<p className="text-white">Quét mã sau để nạp tiền</p>
-						<p className="text-white">
-							Mã QR hết hạn sau:{" "}
-							<span className="font-semibold text-cyan-400">
+						<img src={renderQr()} width='180px' height='180px' alt='qr' />
+						<p className='text-white'>Quét mã sau để nạp tiền</p>
+						<p className='text-white'>
+							Mã QR hết hạn sau:{' '}
+							<span className='font-semibold text-cyan-400'>
 								{formatTime(timeLeft)}
 							</span>
 						</p>
@@ -186,10 +197,15 @@ export default function CocTienModal({ open, onClose, amount, contractId, callBa
 
 				{/* Overlay khi hết hạn */}
 				{expired && (
-					<div className="absolute inset-0 bg-gray-900 z-3 flex flex-col items-center justify-center text-white rounded-md">
-						<div className="text-center space-y-4 px-6">
-							<p className="text-lg font-medium">{content}</p>
-							<Button type="primary" variant="outlined" ghost onClick={handleOkExpired}>
+					<div className='absolute inset-0 bg-gray-900 z-3 flex flex-col items-center justify-center text-white rounded-md'>
+						<div className='text-center space-y-4 px-6'>
+							<p className='text-lg font-medium'>{content}</p>
+							<Button
+								type='primary'
+								variant='outlined'
+								ghost
+								onClick={handleOkExpired}
+							>
 								OK
 							</Button>
 						</div>

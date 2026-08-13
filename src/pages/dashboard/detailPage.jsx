@@ -251,7 +251,7 @@ export default function HomeDetail() {
 				<div className='dashboard-page'>
 					<button
 						onClick={() => navigate('/dashboard')}
-						className='py-1 h-[40px] w-[110px] button_grey bg-transparent border border-solid border-grey-400 rounded-md hover:border-grey-300 hover:text-orange-100 '
+						className='py-1 h-[40px] w-[110px] bg-gray-200 border border-solid border-grey-400 rounded-md'
 					>
 						Trở lại
 					</button>

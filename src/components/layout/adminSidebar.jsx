@@ -1,14 +1,14 @@
-"use client";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+'use client';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
 
-import { Flex, Grid, Image, Layout, Menu, Typography } from "antd";
-import dayjs from "dayjs";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import DepositModal from "../Modal/ModalNapTien";
-import "./dashboard.css";
-import "./style.css";
-import { useMoney } from "../../context/MonetContext";
+import { Flex, Grid, Image, Layout, Menu, Typography } from 'antd';
+import dayjs from 'dayjs';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import DepositModal from '../Modal/ModalNapTien';
+import './dashboard.css';
+import './style.css';
+import { useMoney } from '../../context/MonetContext';
 
 const { Header, Content, Sider } = Layout;
 const { Title, Paragraph } = Typography;
@@ -38,12 +38,12 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 	const [mobileMenuVisible, setMobileMenuVisible] = React.useState(false);
 
 	const onLockout = () => {
-		localStorage.removeItem("axu");
-		localStorage.removeItem("token");
-		localStorage.removeItem("refresh_token");
-		localStorage.removeItem("mmxo");
+		localStorage.removeItem('axu');
+		localStorage.removeItem('token');
+		localStorage.removeItem('refresh_token');
+		localStorage.removeItem('mmxo');
 		trigger();
-		navigate("/");
+		navigate('/');
 	};
 
 	function onCloseDeposit() {
@@ -52,82 +52,82 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 
 	const itemsSidebar = [
 		getItem(
-			"Ds người rút tiền",
-			"1",
+			'Ds người rút tiền',
+			'1',
 			<Image
-				src="/faq/icon1.png"
+				src='/faq/icon1.png'
 				width={26}
 				height={26}
-				alt="icon-support"
+				alt='icon-support'
 				preview={false}
 			/>
 		),
 		{
-			type: "divider",
+			type: 'divider',
 		},
 		getItem(
-			"Trung tâm vé 655",
-			"2",
+			'Trung tâm vé 655',
+			'2',
 			<Image
-				src="/image/icon55.png"
+				src='/image/icon55.png'
 				width={26}
 				height={26}
-				alt="icon-support"
+				alt='icon-support'
 				preview={false}
 			/>
 		),
 		getItem(
-			"Trung tâm vé 645",
-			"3",
+			'Trung tâm vé 645',
+			'3',
 			<Image
-				src="/image/icon45.png"
+				src='/image/icon45.png'
 				width={26}
 				height={26}
-				alt="icon-support"
+				alt='icon-support'
 				preview={false}
 			/>
 		),
 
 		getItem(
-			"Trung tâm vé 635",
-			"4",
+			'Trung tâm vé 635',
+			'4',
 			<Image
-				src="/image/icon35.png"
+				src='/image/icon35.png'
 				width={26}
 				height={26}
-				alt="icon-support"
+				alt='icon-support'
 				preview={false}
 			/>
 		),
 	];
 
 	const handleMenuClick = (e) => {
-		if (e.key === "1") {
-			navigate("/19101994/admin");
+		if (e.key === '1') {
+			navigate('/19101994/admin');
 		}
-		if (e.key === "2") {
-			navigate("/19101994/manage-655");
+		if (e.key === '2') {
+			navigate('/19101994/manage-655');
 		}
-		if (e.key === "3") {
-			navigate("/19101994/manage-645");
+		if (e.key === '3') {
+			navigate('/19101994/manage-645');
 		}
-		if (e.key === "4") {
-			navigate("/19101994/manage-635");
+		if (e.key === '4') {
+			navigate('/19101994/manage-635');
 		}
 	};
 
 	function checkActive(path) {
-		if (path === "/19101994/admin") {
-			return "1";
+		if (path === '/19101994/admin') {
+			return '1';
 		}
-		if (path === "/19101994/manage-655") {
-			return "2";
+		if (path === '/19101994/manage-655') {
+			return '2';
 		}
-		if (path === "/19101994/manage-645") {
-			return "3";
+		if (path === '/19101994/manage-645') {
+			return '3';
 		}
-		if (path === "/19101994/manage-635") {
-			return "4";
+		if (path === '/19101994/manage-635') {
+			return '4';
 		}
 	}
 
@@ -137,15 +137,15 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 				<button
 					onClick={() => setMobileMenuVisible(true)}
 					style={{
-						position: "fixed",
+						position: 'fixed',
 						top: 8,
 						left: 10,
 						zIndex: 1001,
-						background: "transparent",
-						border: "1px solid #ccc",
+						background: 'transparent',
+						border: '1px solid #ccc',
 						borderRadius: 4,
 						padding: 8,
-						display: mobileMenuVisible ? "none" : "block",
+						display: mobileMenuVisible ? 'none' : 'block',
 					}}
 				>
 					☰
@@ -154,100 +154,100 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 
 			<Layout
 				style={{
-					minHeight: "100vh",
-					maxWidth: "2100px",
-					backgroundColor: "#141619",
+					minHeight: '100vh',
+					maxWidth: '2100px',
+					backgroundColor: '#141619',
 				}}
-				className="layout-component"
+				className='layout-component'
 			>
 				{!isMobile ? (
 					<Sider
-						width="300px"
-						theme="light"
-						style={{ backgroundColor: "#0d0d0f" }}
+						width='300px'
+						theme='light'
+						style={{ backgroundColor: '#0d0d0f' }}
 						collapsible
 						trigger={null}
 						collapsed={collapsed}
 					>
 						<Link
-							to="/dashboard"
-							className="flex items-center gap-2 mb-10"
+							to='/dashboard'
+							className='flex items-center gap-2 mb-10'
 							onClick={() => {
-								setActive("");
+								setActive('');
 								window.screenTop(0, 0);
 							}}
 						>
-							<img src="/logo2.png" alt="logo" width="34" height="34" />
-							<p className="text-white text-[18px] font-bold cursor-pointer flex">
-								<span className="orbitron text-xl">JackpotClub</span>
+							<img src='/logo2.png' alt='logo' width='34' height='34' />
+							<p className='text-white text-[18px] font-bold cursor-pointer flex'>
+								<span className='orbitron text-xl'>Net Connect</span>
 							</p>
 						</Link>
 						<Menu
 							onClick={handleMenuClick}
-							theme="dark"
-							defaultSelectedKeys={["1"]}
+							theme='dark'
+							defaultSelectedKeys={['1']}
 							selectedKeys={[checkActive(path)]}
-							mode="inline"
+							mode='inline'
 							items={itemsSidebar}
 						/>
-						<div className="logo-bottom" onClick={onLockout}>
+						<div className='logo-bottom' onClick={onLockout}>
 							<Image
-								src={"/icon/log-out.svg"}
-								alt="logo"
+								src={'/icon/log-out.svg'}
+								alt='logo'
 								width={30}
 								height={30}
-								className="img-logo-bottom"
+								className='img-logo-bottom'
 								preview={false}
 							/>
-							<span className="text-d">Đăng xuất</span>
+							<span className='text-d'>Đăng xuất</span>
 						</div>
 					</Sider>
 				) : (
 					mobileMenuVisible && (
 						<div
 							style={{
-								position: "fixed",
+								position: 'fixed',
 								top: 0,
 								left: 0,
-								width: "300px",
-								height: "100vh",
-								backgroundColor: "#141619",
+								width: '300px',
+								height: '100vh',
+								backgroundColor: '#141619',
 								zIndex: 1000,
-								boxShadow: "2px 0 5px rgba(0,0,0,0.3)",
-								overflowY: "auto",
+								boxShadow: '2px 0 5px rgba(0,0,0,0.3)',
+								overflowY: 'auto',
 							}}
 						>
 							<div
 								style={{
 									padding: 16,
-									borderBottom: "1px solid #ccc",
-									display: "flex",
-									justifyContent: "space-between",
+									borderBottom: '1px solid #ccc',
+									display: 'flex',
+									justifyContent: 'space-between',
 								}}
 							>
-								<div className="flex gap-1 items-center">
-									<img src={"/logo2.png"} alt="logo" className="h-[40px]" />
-									<p className="text-white text-[18px] font-bold cursor-pointer flex">
-										<span className="orbitron text-xl">JackpotClub</span>
+								<div className='flex gap-1 items-center'>
+									<img src={'/logo2.png'} alt='logo' className='h-[40px]' />
+									<p className='text-white text-[18px] font-bold cursor-pointer flex'>
+										<span className='orbitron text-xl'>Net Connect</span>
 									</p>
-								</div>{" "}
+								</div>{' '}
 								<button onClick={() => setMobileMenuVisible(false)}>✕</button>
 							</div>
 
 							<Menu
 								onClick={handleMenuClick}
-								theme="dark"
-								defaultSelectedKeys={["1"]}
-								mode="inline"
+								theme='dark'
+								defaultSelectedKeys={['1']}
+								mode='inline'
 								items={itemsSidebar}
 							/>
-							<div className="logo-bottom-mobile" onClick={onLockout}>
+							<div className='logo-bottom-mobile' onClick={onLockout}>
 								<Image
-									src={"/icon/log-out.svg"}
-									alt="logo"
+									src={'/icon/log-out.svg'}
+									alt='logo'
 									width={30}
 									height={30}
-									className="img-logo-bottom"
+									className='img-logo-bottom'
 									preview={false}
 								/>
 								Đăng xuất
@@ -255,14 +255,14 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 						</div>
 					)
 				)}
-				<Layout style={{ backgroundColor: "#141619" }}>
-					<Header className="layout-header">
+				<Layout style={{ backgroundColor: '#141619' }}>
+					<Header className='layout-header'>
 						<Flex
 							vertical={false}
-							align={isMobile ? "start" : "center"}
-							justify="space-between"
-							style={{ width: "100%" }}
-							gap={isMobile ? "small" : undefined}
+							align={isMobile ? 'start' : 'center'}
+							justify='space-between'
+							style={{ width: '100%' }}
+							gap={isMobile ? 'small' : undefined}
 						>
 							<Flex vertical={true}>
 								{collapsed ? (
@@ -273,30 +273,30 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 											level={5}
 											style={{
 												marginBottom: isMobile ? 0 : undefined,
-												color: "#fff",
+												color: '#fff',
 											}}
 										>
 											Good morning, Hoàng Hoài
 										</Title>
-										<Paragraph className="m-0 text-white">
-											{dayjs().format("MM/DD/YYYY")}
+										<Paragraph className='m-0 text-white'>
+											{dayjs().format('MM/DD/YYYY')}
 										</Paragraph>
 									</>
 								)}
 							</Flex>
 							<Flex
-								align="center"
-								gap={isMobile ? "small" : "middle"}
+								align='center'
+								gap={isMobile ? 'small' : 'middle'}
 								style={{ marginTop: isMobile ? 8 : 0 }}
 							>
-								<Flex align="center" gap="small" onClick={() => navigate(`'/`)}>
+								<Flex align='center' gap='small' onClick={() => navigate(`'/`)}>
 									{!isMobile && (
-										<span className="m-0">
+										<span className='m-0'>
 											Tài khoản: {balance.toLocaleString()}
 											<span
 												style={{
-													color: "#FACC15",
-													textShadow: "0 0 5px #FFD700, 0 0 8px #FFD700",
+													color: '#FACC15',
+													textShadow: '0 0 5px #FFD700, 0 0 8px #FFD700',
 												}}
 											>
 												VND
@@ -304,10 +304,10 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 										</span>
 									)}
 								</Flex>
-								<Flex align="center">
+								<Flex align='center'>
 									<button
 										onClick={() => setOpenDeposit(true)}
-										className="py-1 h-[40px] w-[110px] button_downloadcv bg-transparent border border-solid border-lime-400 rounded-md hover:border-lime-300 hover:text-orange-100 "
+										className='py-1 h-[40px] w-[110px] button_downloadcv bg-transparent border border-solid border-lime-400 rounded-md hover:border-lime-300 hover:text-orange-100 '
 									>
 										Nạp tiền
 									</button>
@@ -315,25 +315,25 @@ const LayoutAdminComponent = ({ isSetting, children }) => {
 							</Flex>
 						</Flex>
 					</Header>
-					<Content className="layout-content">{children}</Content>
+					<Content className='layout-content'>{children}</Content>
 				</Layout>
 				{!isMobile && (
 					<>
-						{" "}
+						{' '}
 						<button
-							className="button-collapse"
+							className='button-collapse'
 							style={{
-								left: collapsed ? "65px" : "288px",
-								transition: "left 0.4s ease",
-								top: collapsed ? "85px" : "128px",
-								position: "fixed",
+								left: collapsed ? '65px' : '288px',
+								transition: 'left 0.4s ease',
+								top: collapsed ? '85px' : '128px',
+								position: 'fixed',
 							}}
 							onClick={() => setCollapsed(!collapsed)}
 						>
 							{collapsed ? (
-								<RightOutlined color="#969696" size={18} />
+								<RightOutlined color='#969696' size={18} />
 							) : (
-								<LeftOutlined color="#969696" size={18} />
+								<LeftOutlined color='#969696' size={18} />
 							)}
 						</button>
 					</>

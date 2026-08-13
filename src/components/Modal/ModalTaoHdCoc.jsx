@@ -16,7 +16,7 @@ import {
 	uploadMedia,
 } from '../../api/contract/action';
 import { message } from 'antd';
-import { Select } from 'antd';
+import { Select, Grid } from 'antd';
 import { Typography } from 'antd';
 import { useEffect } from 'react';
 import { DatePicker } from 'antd';
@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
+const { useBreakpoint } = Grid;
 
 export default function TaoHdCocModal({
 	open,
@@ -31,6 +32,7 @@ export default function TaoHdCocModal({
 	isEdit = false,
 	dataContract = {},
 }) {
+	const screens = useBreakpoint();
 	const navigate = useNavigate();
 	const [ticketCount, setTicketCount] = useState(null);
 	const [success, setSuccess] = useState(false);
@@ -222,6 +224,7 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 			onCancel={onClose}
 			footer={false}
 			centered
+			width={screens.md ? 800 : '90%'}
 			title={<span className='text-lg font-semibold'>Tạo hợp đồng cọc</span>}
 		>
 			<div className='relative'>
@@ -237,7 +240,7 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 										style={{
 											marginBottom: 0,
 											fontStyle: 'italic',
-											color: '#d6d6d6',
+											color: '#060606',
 										}}
 									>
 										{CONTRACT_TYPES[type].description}
@@ -336,7 +339,7 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 						>
 							<div className='flex items-center flex-col justify-center'>
 								<PlusOutlined class='text-white text-center' />
-								<div className='mt-2 text-white'>Thêm ảnh</div>
+								<div className='mt-2 text-grey-400'>Thêm ảnh</div>
 							</div>
 						</Upload>
 					</Form.Item>
@@ -372,12 +375,12 @@ Nếu Bên B không bán hoặc máy không đúng cam kết (không nguyên zin
 
 				{/* Overlay thành công */}
 				{success && (
-					<div className='absolute inset-0 z-[3] bg-gray-900 flex flex-col items-center justify-center text-white rounded-md'>
+					<div className='absolute inset-0 z-[3] flex flex-col items-center justify-center text-white rounded-md bg-gray-200'>
 						<div className='flex flex-col items-center justify-center text-center space-y-4 px-6'>
-							<p className='text-lg font-medium'>Tạo hợp đồng thành công!</p>
+							<p className='text-lg font-medium text-gray-700'>Tạo hợp đồng thành công!</p>
 							<button
 								onClick={handleCloseSuccess}
-								className='py-1 h-[40px] w-[210px] button_grey bg-transparent border border-solid border-grey-400 rounded-md hover:border-grey-300 hover:text-orange-100 '
+								className='py-1 h-[40px] w-[210px] button_downloadcv  rounded-md '
 							>
 								Xem chi tiết
 							</button>
