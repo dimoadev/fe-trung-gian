@@ -113,7 +113,7 @@ export default function ResetPassPage() {
 			{/* Right side image */}
 			<div className='hidden md:flex md:w-1/2'>
 				<img
-					src='/image/fogotpass.png'
+					src='/image/register.png'
 					alt='Login background'
 					className='object-cover w-full h-[100vh]'
 				/>

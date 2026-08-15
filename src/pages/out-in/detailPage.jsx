@@ -161,7 +161,7 @@ const TabPeople = () => {
 										{...register("number", {
 											required: "Số tk không được để trống",
 										})}
-										className={`w-full p-2 rounded-md focus:outline-none focus:ring-2 ${
+										className={`w-full p-2 rounded-md border border-cyan-300 focus:outline-none focus:ring-2 ${
 											errors.number
 												? "border-red-500 focus:ring-red-300"
 												: "focus:ring-cyan-400"
@@ -185,7 +185,7 @@ const TabPeople = () => {
 										{...register("name", {
 											required: "Tên không được để trống",
 										})}
-										className={`w-full p-2 rounded-md focus:outline-none focus:ring-2 ${
+										className={`w-full p-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 ${
 											errors.name
 												? "border-red-500 focus:ring-red-300"
 												: "focus:ring-cyan-400"
@@ -213,7 +213,7 @@ const TabPeople = () => {
 							{!dataBank && (
 								<button
 									type="submit"
-									className="w-full border border-lime-400 hover:border-lime-700 text-white font-medium py-2 rounded-md mt-2 transition"
+									className="w-full border bg-cyan-400 hover:bg-cyan-700 text-white font-medium py-2 rounded-md mt-2 transition"
 								>
 									{showNoti ? "Tiếp tục" : "Lưu"}
 								</button>
@@ -281,13 +281,13 @@ const TabTicket = () => {
 
 	const columns = [
 		{
-			title: "Số tiền nạp",
+			title: "Số tiền rút",
 			dataIndex: "amount",
 			key: "year",
 			render: (_, row) => Number(row.amount).toLocaleString(),
 		},
 		{
-			title: "Ngày nạp",
+			title: "Ngày rút",
 			dataIndex: "createdAt",
 			key: "gci",
 			render: (row) => dayjs(row).format("DD-MM-YYYY HH:mm"),
@@ -384,7 +384,7 @@ export default function OutInDetailPage() {
 		},
 		{
 			key: "2",
-			label: "Lịch sử nạp tiền",
+			label: "Lịch sử rút tiền",
 			children: <TabTicket />,
 		},
 	];

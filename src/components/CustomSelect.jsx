@@ -8,34 +8,34 @@ export default function CustomSelect({ options, ...rest }) {
 			styles={{
 				control: (base, state) => ({
 					...base,
-					backgroundColor: "#141619",
-					color: "#fff",
-					borderColor: state.isFocused ? "#22d3ee" : "#d1d5db", // focus cyan
+					backgroundColor: "#fff",
+					color: "#141619",
+					borderColor: state.isFocused ? "#22d3ee" : "rgb(90, 219, 239)", // focus cyan
 					boxShadow: state.isFocused ? "0 0 0 1px rgb(90, 219, 239)" : "none",
 					"&:hover": { borderColor: "#22d3ee" },
 				}),
 				menu: (base) => ({
 					...base,
 					zIndex: 50,
-					backgroundColor: "#141619",
-					color: "#fff",
+					backgroundColor: "#fff",
+					color: "#141619",
 				}),
 				option: (base, state) => ({
 					...base,
 					backgroundColor: state.isFocused
-						? "#3A3F3A" // 🌈 màu khi hover
+						? "#9ec1e6" // 🌈 màu khi hover
 						: state.isSelected
-						? "#2B2F2B" // 🌈 màu khi chọn
-						: "#141619", // 🌈 màu mặc định
-					color: "#fff",
+						? "#9ec1e6" // 🌈 màu khi chọn
+						: "#fff", // 🌈 màu mặc định
+					color: "#141619",
 					cursor: "pointer",
 					"&:active": {
-						backgroundColor: "#141619",
+						backgroundColor: "#fff",
 					},
 				}),
 				singleValue: (base) => ({
 					...base,
-					color: "#fff",
+					color: "#141619",
 				  }),
 			}}
 		/>

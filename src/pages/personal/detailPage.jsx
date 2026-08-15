@@ -197,11 +197,11 @@ export default function PersonalDetailPage() {
 							<p>Email: hoanghoai12@gmail.com</p>
 							{/* <p>Số lần tham gia : 50</p>
 							<p>Tổng giải thưởng: 40,000,000</p> */}
-							<Tabs
+							{/* <Tabs
 								defaultActiveKey="1"
 								items={itemsTabs}
 								style={{ color: "white" }}
-							/>
+							/> */}
 						</Flex>
 					</section>
 				</div>
