@@ -171,7 +171,7 @@ const LayoutComponent = ({ isSetting, children }) => {
 						>
 							<img src='/logo2.png' alt='logo' width='34' height='34' />
 							{!collapsed && <p className='text-white text-[18px] font-bold cursor-pointer flex'>
-								<span className='orbitron text-xl'>Net Connect</span>
+								<span className='orbitron text-xl'>Trunggian IO</span>
 							</p>}
 						</Link>
 						<Menu

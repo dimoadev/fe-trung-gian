@@ -67,7 +67,7 @@ export default function ConfirmTermModal({
 			centered
 			title={
 				<div className='flex flex-col'>
-					<span className='text-lg font-semibold'>{CONTENT[type].title}</span>
+					<span className='text-lg font-semibold'>{CONTENT[type]?.title}</span>
 					<div className='flex items-center gap-1 mt-2 text-sm text-white'></div>
 				</div>
 			}
@@ -76,7 +76,7 @@ export default function ConfirmTermModal({
 				<div className='space-y-4 mt-4'>
 					<label className='block text-sm font-medium text-gray-700'>
 						<div
-							dangerouslySetInnerHTML={{ __html: CONTENT[type].description }}
+							dangerouslySetInnerHTML={{ __html: CONTENT[type]?.description }}
 						/>
 					</label>
 					{/* <p className="text-sm text-white italic">Bấm tiếp tục để quét mã chuyển khoản</p> */}

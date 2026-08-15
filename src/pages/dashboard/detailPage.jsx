@@ -1,9 +1,11 @@
 import {
+	CloseCircleFilled,
 	ContainerOutlined,
 	DollarOutlined,
 	EditOutlined,
 	MailOutlined,
 	PhoneOutlined,
+	PictureOutlined,
 	PlusOutlined,
 	UserOutlined,
 } from '@ant-design/icons';
@@ -23,16 +25,18 @@ import {
 	Spin,
 	Tag,
 	Typography,
+	Upload,
 	message as messageAntd,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { socket } from '../../../socket';
 import {
 	addPartyB,
 	detailContract,
 	getChatGroup,
+	uploadMedia,
 } from '../../api/contract/action';
 import { findUserByMailPhone } from '../../api/user/action';
 import LayoutComponent from '../../components/layout';
@@ -42,6 +46,7 @@ import ConfirmTermModal from '../../components/Modal/ModalConfirmTerm';
 import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
 import StepProgress from '../../components/Progress';
 import { SpinCustom } from '../../components/SpinCustom';
+import { sendTelegramMessage } from '../../constants/common';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -83,6 +88,122 @@ export default function HomeDetail() {
 	}
 
 	const [message, setMessage] = useState('');
+	const [images, setImages] = useState([]);
+	const [cursorPos, setCursorPos] = useState(0);
+	const [mentionOpen, setMentionOpen] = useState(false);
+	const [mentionStart, setMentionStart] = useState(0);
+	const [mentionQuery, setMentionQuery] = useState('');
+	const textareaRef = useRef(null);
+	const chatRef = useRef(null);
+
+	const MENTION_OPTIONS = [{ value: '@admin', label: 'Admin' }];
+	const mentionOptions = MENTION_OPTIONS.filter(
+		(option) =>
+			option.value.toLowerCase().includes(mentionQuery.toLowerCase()) ||
+			option.label.toLowerCase().includes(mentionQuery.toLowerCase())
+	);
+
+	function updateMention(value, pos) {
+		const textBefore = value.slice(0, pos);
+		const match = textBefore.match(/@(\w*)$/);
+		if (match) {
+			setMentionOpen(true);
+			setMentionStart(pos - match[0].length);
+			setMentionQuery(match[1]);
+		} else {
+			setMentionOpen(false);
+			setMentionQuery('');
+		}
+	}
+
+	function handleMessageChange(e) {
+		const value = e.target.value;
+		const pos = e.target.selectionStart;
+		setMessage(value);
+		setCursorPos(pos);
+		updateMention(value, pos);
+	}
+
+	function insertMention(mention) {
+		const newValue =
+			message.slice(0, mentionStart) +
+			mention +
+			' ' +
+			message.slice(cursorPos);
+		setMessage(newValue);
+		setMentionOpen(false);
+		setMentionQuery('');
+		if (textareaRef.current) {
+			textareaRef.current.focus();
+			const newPos = mentionStart + mention.length + 1;
+			textareaRef.current.setSelectionRange(newPos, newPos);
+		}
+	}
+
+	function renderMessageWithMention(text) {
+		const parts = String(text || '').split(/(@admin)/gi);
+		return parts.map((part, index) =>
+			/^@admin$/i.test(part) ? (
+				<span
+					key={index}
+					className='bg-blue-200 text-blue-800 font-semibold rounded px-1'
+				>
+					{part}
+				</span>
+			) : (
+				<span key={index}>{part}</span>
+			)
+		);
+	}
+
+	async function sendMessage() {
+		const text = message.trim();
+		if (!text && !images.length) return;
+
+		let uploadedUrls = [];
+		console.log('images', images);
+		if (images.length) {
+			uploadedUrls = await Promise.all(
+				images.map(async (file) => {
+					const res = await uploadMedia({ file });
+					return res?.url;
+				})
+			);
+		}
+
+		if (text.includes('@admin')) {
+			sendTelegramMessage(`Hợp đồng https://cms.trunggian.io.vn/contract/detail/${id} tag`);
+		}
+		socket.emit('send-message', {
+			contractId: id,
+			message: text,
+			images: uploadedUrls.filter(Boolean),
+		});
+		setMessage('');
+		setImages([]);
+		setMentionOpen(false);
+	}
+
+	function handleKeyDown(e) {
+		if (e.key === 'Escape') {
+			setMentionOpen(false);
+			return;
+		}
+		if (e.key === 'Enter' && !e.shiftKey) {
+			e.preventDefault();
+			if (mentionOpen && mentionOptions.length) {
+				insertMention(mentionOptions[0].value);
+				return;
+			}
+			sendMessage();
+		}
+	}
+
+	useEffect(() => {
+		if (chatRef.current) {
+			chatRef.current.scrollTop = chatRef.current.scrollHeight;
+		}
+	}, [chat]);
 
 	useEffect(() => {
 		if (id) {
@@ -528,13 +649,13 @@ export default function HomeDetail() {
 							title='Tiến trình hợp đồng'
 						>
 							<div className='mb-6 p-4 bg-slate-50 border border-slate-100 rounded-xl transition-all duration-300'>
-								{stepDescriptions.map((item, index) => (
+								{stepDescriptions?.map((item, index) => (
 									<div key={index}>
 										<h4 className='text-sm font-bold text-slate-800 mb-1'>
-											{item.title}
+											{item?.title}
 										</h4>
 										<div className='text-xs text-slate-600 leading-relaxed'>
-											{item.content}
+											{item?.content}
 										</div>
 									</div>
 								))}
@@ -546,7 +667,10 @@ export default function HomeDetail() {
 							className='mt-6 rounded-xl shadow-sm'
 							title='Trao đổi giữa các bên'
 						>
-							<div className='h-[450px] overflow-y-auto border rounded-lg p-5 bg-gray-50'>
+							<div
+							ref={chatRef}
+							className='h-[450px] overflow-y-auto border rounded-lg p-5 bg-gray-50'
+						>
 								{chat.map((item) => {
 									const isMe = user.id === item.sender?.id;
 									const isSystem = item.senderType === 'SYSTEM';
@@ -596,7 +720,28 @@ export default function HomeDetail() {
 															{item.name}
 														</div>
 													)}
-													<div className='break-words'>{item.message}</div>
+													<div className='break-words'>
+													{renderMessageWithMention(item.message)}
+												</div>
+												{item.images?.length > 0 && (
+													<div className='flex flex-wrap gap-2 mt-2'>
+														{item.images.map((img) => (
+															<Image
+																key={img}
+																src={
+																	typeof img === 'string' &&
+																	img.startsWith('http')
+																		? img
+																		: `https://api.trunggian.io.vn${img}`
+																}
+																width={140}
+																height={140}
+																style={{ objectFit: 'cover' }}
+																className='rounded-lg'
+															/>
+														))}
+													</div>
+												)}
 												</div>
 
 												{/* Thời gian hiển thị phía dưới tin nhắn */}
@@ -610,30 +755,91 @@ export default function HomeDetail() {
 								})}
 							</div>
 
-							<div className='flex gap-3 mt-5'>
+						<div className='mt-5'>
+							{images.length > 0 && (
+								<div className='flex flex-wrap gap-3 mb-3'>
+									{images.map((img, index) => (
+										<div key={index} className='relative'>
+											<Image
+												src={URL.createObjectURL(img)}
+												width={64}
+												height={64}
+												style={{ objectFit: 'cover' }}
+												className='rounded-md'
+											/>
+											<CloseCircleFilled
+												className='absolute -top-2 -right-2 text-red-500 text-lg cursor-pointer bg-white rounded-full'
+												onClick={() =>
+													setImages((prev) =>
+														prev.filter((_, i) => i !== index)
+													)
+												}
+											/>
+										</div>
+									))}
+								</div>
+							)}
+
+							<div className='relative'>
 								<Input.TextArea
+									ref={textareaRef}
 									rows={2}
 									value={message}
 									placeholder='Nhập tin nhắn... Có thể dùng @admin để yêu cầu hỗ trợ.'
-									onChange={(e) => setMessage(e.target.value)}
+									onChange={handleMessageChange}
+									onKeyDown={handleKeyDown}
+									onSelect={(e) => setCursorPos(e.target.selectionStart)}
 								/>
+
+								{mentionOpen && mentionOptions.length > 0 && (
+									<div className='absolute bottom-full left-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-lg w-56 z-10 overflow-hidden'>
+										{mentionOptions.map((option) => (
+											<div
+												key={option.value}
+												className='flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-blue-50'
+												onMouseDown={(e) => {
+													e.preventDefault();
+													insertMention(option.value);
+												}}
+											>
+												<Avatar
+													size={24}
+													icon={<UserOutlined />}
+												/>
+												<span className='text-sm font-medium'>
+													{option.label}
+												</span>
+												<span className='ml-auto text-xs text-gray-400'>
+													{option.value}
+												</span>
+											</div>
+										))}
+									</div>
+								)}
+							</div>
+
+							<div className='flex items-center justify-between mt-3'>
+								<Upload
+									accept='image/*'
+									multiple
+									showUploadList={false}
+									beforeUpload={(file) => {
+										setImages((prev) => [...prev, file]);
+										return false;
+									}}
+								>
+									<Button icon={<PictureOutlined />}>Ảnh</Button>
+								</Upload>
 
 								<Button
 									type='primary'
 									size='large'
-									className='h-auto'
-									onClick={async () => {
-										if (!message) return;
-										socket.emit('send-message', {
-											contractId: id,
-											message,
-										});
-										setMessage('');
-									}}
+									onClick={sendMessage}
 								>
 									Gửi
 								</Button>
 							</div>
+						</div>
 						</Card>
 						{/* ================= Deposit Modal ================= */}
 						<CocTienModal

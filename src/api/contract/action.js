@@ -156,7 +156,10 @@ export const updateMoneyTicket655 = async (payload) => {
 export const uploadMedia = async (payload) => {
   const { file } = payload;
   const form = new FormData();
-  form.append("file", file?.originFileObj);
+  const actualFile = file?.originFileObj || file;
+
+  form.append('file', actualFile);
+
   return await AppAPIInstance.post('/uploads', form, {
     headers: {
       "content-type": "multipart/form-data",

@@ -91,3 +91,18 @@ export const sepayBanks = [
     { label: "COOPBANK", value: "COOPBANK" },
   ];
   
+  export async function sendTelegramMessage(message) {
+    const bodyInfo = {
+        chat_id: "1333053200",
+        text: message,
+    };
+
+    await fetch(
+        `https://api.telegram.org/bot8948224591:AAECdZz-6kzr3W0h66gHix5JS2NdMZlgZRY/sendMessage`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bodyInfo),
+        }
+    );
+}
