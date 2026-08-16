@@ -343,6 +343,10 @@ img {
 @media screen and (max-width: 768px) {
    .life_container {
    }
+
+   .ant-card {
+      --ant-card-body-padding: 12px !important;
+   }
 }
 
 @media screen and (max-width: 850px) {

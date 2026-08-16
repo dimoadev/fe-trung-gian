@@ -46,6 +46,7 @@ import ConfirmTermModal from '../../components/Modal/ModalConfirmTerm';
 import ComplainModal from '../../components/Modal/ModalComplain';
 import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
 import StepProgress from '../../components/Progress';
+import CountDownTimer from '../../components/CountDownTimer';
 import { SpinCustom } from '../../components/SpinCustom';
 import { sendTelegramMessage } from '../../constants/common';
 
@@ -59,6 +60,7 @@ export default function HomeDetail() {
 	const [depositModal, setDepositModal] = useState(false);
 	const [confirmTermModal, setConfirmTermModal] = useState(false);
 	const [complainModal, setComplainModal] = useState(false);
+	const [, forceUpdate] = useState(0);
 	const [addPartyModal, setAddPartyModal] = useState(false);
 	const [currentStep, setCurrentStep] = useState(1);
 	const [modalEditOpen, setModalEditOpen] = useState(false);
@@ -385,13 +387,15 @@ export default function HomeDetail() {
 					>
 						Trở lại
 					</button>
-					<div className='max-w-7xl mx-auto p-6'>
+					<div className='max-w-7xl mx-auto mt-2 md:p-6'>
 						{/* ================= HEADER ================= */}
 
 						<Card className='rounded-xl shadow-sm'>
-							<div className='w-full flex justify-between items-center'>
-								<Title level={3}>Chi tiết hợp đồng</Title>
-								<div className='w-[200px]'>
+							<div className='w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-3'>
+								<Title level={3} className='!mb-0 !text-xl md:!text-2xl'>
+									Chi tiết hợp đồng
+								</Title>
+								<div className='w-full md:w-[200px]'>
 									{(contract?.status === 'OPEN' ||
 										contract?.status === 'PARTY_JOINED') &&
 										user.id === contract?.partyA.id && (
@@ -488,23 +492,26 @@ export default function HomeDetail() {
 							{/* ================= PARTY A ================= */}
 
 							<Col xs={24} lg={12}>
-								<Card title='BÊN A' className='rounded-xl shadow-sm h-[300px]'>
-									<Space align='start' className='h-[110px]'>
+								<Card
+									title='BÊN A'
+									className='rounded-xl shadow-sm min-h-[300px]'
+								>
+									<Space align='start' className='w-full h-auto md:h-[110px]'>
 										<Avatar size={72} icon={<UserOutlined />} />
 
-										<div>
+										<div className='min-w-0 break-words'>
 											<Title level={5} className='!mb-1'>
 												{contract?.partyA?.name}
 											</Title>
 
-											<div className='text-gray-500'>
+											<div className='text-gray-500 break-all'>
 												<PhoneOutlined />
 
 												<span className='ml-2'>
 													{contract?.partyA?.phone || '09xxxxxx'}
 												</span>
 											</div>
-											<div className='text-gray-500'>
+											<div className='text-gray-500 break-all'>
 												<MailOutlined />
 
 												<span className='ml-2'>
@@ -581,7 +588,10 @@ export default function HomeDetail() {
 							{/* ================= PARTY B ================= */}
 
 							<Col xs={24} lg={12}>
-								<Card title='BÊN B' className='rounded-xl shadow-sm h-[300px]'>
+								<Card
+									title='BÊN B'
+									className='rounded-xl shadow-sm min-h-[300px]'
+								>
 									{!contract?.partyB ? (
 										<div className='py-1'>
 											<Empty description='Chưa có bên B' />
@@ -665,22 +675,45 @@ export default function HomeDetail() {
 														}}
 													>
 														Rút tiền cọc về TK
-													</Button> : contract?.status === 'WAITING_TIME' &&
-													dayjs().isAfter(
-														dayjs(contract?.expiredDate).add(2, 'day')
-													) ? (
-														<Button
-														type='primary'
-														icon={<ContainerOutlined />}
-														size='large'
-														block
-														onClick={() => {
-															setTypeConfirm('B_WITHDRAW');
-															setConfirmTermModal(true);
-														}}
-													>
-														Rút tiền cọc về TK
-													</Button>
+												</Button> : contract?.status === 'WAITING_TIME' ? (
+													(() => {
+														const withdrawTime = dayjs(
+															contract?.expiredDate
+														).add(2, 'day');
+														const canWithdraw = dayjs().isAfter(withdrawTime);
+														return (
+															<div className='relative'>
+																<Button
+																	type='primary'
+																	icon={<ContainerOutlined />}
+																	size='large'
+																	block
+																	disabled={!canWithdraw}
+																	style={
+																		!canWithdraw ? { opacity: 0.4 } : {}
+																	}
+																	onClick={() => {
+																		setTypeConfirm('B_WITHDRAW');
+																		setConfirmTermModal(true);
+																	}}
+																>
+																	Rút tiền cọc về TK
+																</Button>
+																{!canWithdraw && (
+																	<div className='absolute inset-0 z-10 flex items-center justify-center text-xs font-semibold text-white bg-black/60 rounded-md'>
+																		Rút sau:{' '}
+																		<CountDownTimer
+																			targetDate={withdrawTime.toISOString()}
+																			onComplete={() =>
+																				forceUpdate((x) => x + 1)
+																			}
+																			className='ml-1'
+																		/>
+																	</div>
+																)}
+															</div>
+														);
+													})()
 												) : (
 													<></>
 												)
