@@ -30,6 +30,7 @@ export const API = {
     DELETE: (id) => `/video/${id}`,
     UPDATE_STATUS: (id) => `/contracts/${id}/update-status`,
     WITHDRAW: (id) => `/contracts/${id}/withdraw-contract`,
+    COMPLAIN: (id) => `/contracts/${id}/complain`,
 
   },
   CHAT: {

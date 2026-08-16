@@ -72,6 +72,15 @@ export const withdrawContract = async (payload) => {
   }
 };
 
+export const complainContract = async (payload) => {
+  const {id, data} = payload;
+  try {
+    return await AppAPIInstance.post(API.CONTRACT.COMPLAIN(id), data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const update655Running = async (payload) => {
   const {id} = payload;
   try {

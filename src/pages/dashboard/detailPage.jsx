@@ -43,6 +43,7 @@ import LayoutComponent from '../../components/layout';
 import JoinNextDrawModal from '../../components/Modal/JoinModal';
 import CocTienModal from '../../components/Modal/ModalCocTien';
 import ConfirmTermModal from '../../components/Modal/ModalConfirmTerm';
+import ComplainModal from '../../components/Modal/ModalComplain';
 import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
 import StepProgress from '../../components/Progress';
 import { SpinCustom } from '../../components/SpinCustom';
@@ -57,6 +58,7 @@ export default function HomeDetail() {
 	const [contract, setContract] = useState(null);
 	const [depositModal, setDepositModal] = useState(false);
 	const [confirmTermModal, setConfirmTermModal] = useState(false);
+	const [complainModal, setComplainModal] = useState(false);
 	const [addPartyModal, setAddPartyModal] = useState(false);
 	const [currentStep, setCurrentStep] = useState(1);
 	const [modalEditOpen, setModalEditOpen] = useState(false);
@@ -543,6 +545,17 @@ export default function HomeDetail() {
 											>
 												Xác nhận nhận hàng
 											</Button>
+										) : contract?.status === 'WAITING_TIME' ? (
+											<Button
+												type='primary'
+												danger
+												icon={<CloseCircleFilled />}
+												size='large'
+												block
+												onClick={() => setComplainModal(true)}
+											>
+												Khiếu nại
+											</Button>
 										) : (
 											<></>
 										)
@@ -993,6 +1006,17 @@ export default function HomeDetail() {
 					}
 				}}
 				type={typeConfirm}
+			/>
+			<ComplainModal
+				open={complainModal}
+				onClose={() => setComplainModal(false)}
+				contractId={id}
+				callBack={() => {
+					socket.emit('update-status-contract', {
+						contractId: id,
+						type: 'COMPLAIN'
+					});
+				}}
 			/>
 		</div>
 	);
