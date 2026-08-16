@@ -306,7 +306,7 @@ export default function HomeDetail() {
 		{ id: 4, label: 'Cọc tiền', key: 'DEPOSITED' },
 		{ id: 5, label: 'Xác nhận gửi hàng', key: 'WAITING_SHIPMENT' },
 		{ id: 6, label: 'Xác nhận nhận hàng', key: 'SHIPPED' },
-		{ id: 7, label: 'Hủy', key: 'CANCELED' },
+		{ id: 7, label: 'Hủy', key: 'CANCELLED' },
 		{ id: 8, label: 'Thời gian giờ', key: 'WAITING_TIME' },
 		{ id: 9, label: 'Khiếu nại', key: 'COMPLAIN' },
 		{ id: 10, label: 'Hoàn thành', key: 'COMPLETED' },
@@ -556,6 +556,19 @@ export default function HomeDetail() {
 											>
 												Khiếu nại
 											</Button>
+										) : contract?.status === 'CANCELLED' ? (
+											<Button
+												type='primary'
+												icon={<DollarOutlined />}
+												size='large'
+												block
+												onClick={() => {
+													setTypeConfirm('B_WITHDRAW');
+													setConfirmTermModal(true);
+												}}
+											>
+												Rút tiền
+											</Button>
 										) : (
 											<></>
 										)
@@ -652,7 +665,23 @@ export default function HomeDetail() {
 														}}
 													>
 														Rút tiền cọc về TK
-													</Button> : (
+													</Button> : contract?.status === 'WAITING_TIME' &&
+													dayjs().isAfter(
+														dayjs(contract?.expiredDate).add(2, 'day')
+													) ? (
+														<Button
+														type='primary'
+														icon={<ContainerOutlined />}
+														size='large'
+														block
+														onClick={() => {
+															setTypeConfirm('B_WITHDRAW');
+															setConfirmTermModal(true);
+														}}
+													>
+														Rút tiền cọc về TK
+													</Button>
+												) : (
 													<></>
 												)
 											) : (

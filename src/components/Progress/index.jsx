@@ -1,7 +1,7 @@
 import React from 'react';
 
 const STEP_IDS_BY_STATUS = {
-	CANCELED: [1, 2, 3, 4, 7, 10],
+	CANCELLED: [1, 2, 3, 4, 7, 10],
   WAITING_TIME: [1, 2, 3, 4, 5, 8, 10],
 	COMPLAIN: [1, 2, 3, 4, 5, 8, 9, 10],
 };

@@ -12,8 +12,14 @@ export const ColorMapping = {
 
 export const ColorSessionMapping = {
     OPEN: "orange",
+    PARTY_JOINED: "blue",
+    CONFIRM_TERM: "purple",
     DEPOSITED: "green",
-    CANCELLED: "cyan",
+    WAITING_SHIPMENT: "gold",
+    SHIPPED: "cyan",
+    A_WITHDRAW: "magenta",
+    B_WITHDRAW: "magenta",
+    CANCELLED: "red",
     COMPLETED: "grey"
 }
 
@@ -27,7 +33,9 @@ export const StatusSessionMapping = {
     WAITING_SHIPMENT: "Chờ gửi hàng",
     SHIPPED: "Đã gửi hàng",
     A_WITHDRAW: "Bên A rút tiền",
-    B_WITHDRAW: "Bên B rút tiền"
+    B_WITHDRAW: "Bên B rút tiền",
+    WAITING_TIME: "Thời gian Chờ",
+    COMPLAINT: "Khiếu nại"
 }
 
 export const Prize655 = {
