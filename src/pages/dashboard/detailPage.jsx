@@ -254,10 +254,14 @@ export default function HomeDetail() {
 
 	useEffect(() => {
 		if (contract) {
-			const progress = JSON.parse(contract.progress.replace(/'/g, '"'));
-			const stepKey = progress[progress.length - 1];
-			const stepIndex = steps.find((step) => step.key === stepKey);
-			setCurrentStep(stepIndex.id);
+			try {
+				const progress = JSON.parse(contract.progress.replace(/'/g, '"'));
+				const stepKey = progress[progress.length - 1];
+				const stepIndex = steps.find((step) => step.key === stepKey);
+				setCurrentStep(stepIndex?.id ?? 1);
+			} catch (e) {
+				setCurrentStep(1);
+			}
 		}
 	}, [contract]);
 
@@ -300,7 +304,10 @@ export default function HomeDetail() {
 		{ id: 4, label: 'Cọc tiền', key: 'DEPOSITED' },
 		{ id: 5, label: 'Xác nhận gửi hàng', key: 'WAITING_SHIPMENT' },
 		{ id: 6, label: 'Xác nhận nhận hàng', key: 'SHIPPED' },
-		{ id: 7, label: 'Hoàn thành', key: 'COMPLETED' },
+		{ id: 7, label: 'Hủy', key: 'CANCELED' },
+		{ id: 8, label: 'Thời gian giờ', key: 'WAITING_TIME' },
+		{ id: 9, label: 'Khiếu nại', key: 'COMPLAIN' },
+		{ id: 10, label: 'Hoàn thành', key: 'COMPLETED' },
 	];
 
 	// Object chứa nội dung mô tả chi tiết cho từng bước giúp hướng dẫn người dùng
@@ -660,7 +667,11 @@ export default function HomeDetail() {
 									</div>
 								))}
 							</div>
-							<StepProgress steps={steps} currentStep={currentStep} />
+							<StepProgress
+								steps={steps}
+								currentStep={currentStep}
+								status={contract?.status}
+							/>
 						</Card>
 
 						<Card

@@ -40,7 +40,12 @@ AppAPIInstance.interceptors.response.use(
 				] = `Bearer ${newToken.data.accessToken}`;
 				return axios(originalRequest);
 			} catch (refreshError) {
-				window.location.replace('/auth/login');
+				localStorage.removeItem('token');
+				localStorage.removeItem('refresh_token');
+				localStorage.removeItem('axu');
+				if (!window.location.pathname.includes('/auth/login')) {
+					window.location.replace('/auth/login');
+				}
 				return Promise.reject(refreshError);
 			}
 		}
