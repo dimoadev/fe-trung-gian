@@ -71,16 +71,16 @@ const AppInner = () => {
 									</PrivateRoute>
 								}
 							/>
-							<Route
+							{/* <Route
 								path='/personal/detail'
 								element={
 									<PrivateRoute>
 										<PersonalDetailPage />
 									</PrivateRoute>
 								}
-							/>
+							/> */}
 							<Route
-								path='/out-in/detail'
+								path='/personal/detail'
 								element={
 									<PrivateRoute>
 										<OutInDetailPage />

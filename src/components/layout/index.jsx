@@ -62,7 +62,7 @@ const LayoutComponent = ({ isSetting, children }) => {
 			'HĐ cọc của tôi',
 			'1',
 			<Image
-				src='/image/icon55.png'
+				src='/faq/icon1.png'
 				width={26}
 				height={26}
 				alt='icon-support'
@@ -74,18 +74,7 @@ const LayoutComponent = ({ isSetting, children }) => {
 			type: 'divider',
 		},
 		getItem(
-			'Tài khoản',
-			'4',
-			<Image
-				src='/faq/icon1.png'
-				width={26}
-				height={26}
-				alt='icon-support'
-				preview={false}
-			/>
-		),
-		getItem(
-			'Nạp - Rút',
+			'Tài khoản - Rút',
 			'5',
 			<Image
 				src='/faq/icon3.png'
@@ -101,11 +90,8 @@ const LayoutComponent = ({ isSetting, children }) => {
 		if (e.key === '1') {
 			navigate('/dashboard');
 		}
-		if (e.key === '4') {
-			navigate('/personal/detail');
-		}
 		if (e.key === '5') {
-			navigate('/out-in/detail');
+			navigate('/personal/detail');
 		}
 	};
 
@@ -115,9 +101,6 @@ const LayoutComponent = ({ isSetting, children }) => {
 		}
 
 		if (path === '/personal/detail') {
-			return '4';
-		}
-		if (path === '/out-in/detail') {
 			return '5';
 		}
 	}

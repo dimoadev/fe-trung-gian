@@ -1,5 +1,6 @@
 import {
 	Col,
+	Descriptions,
 	Flex,
 	message,
 	Pagination,
@@ -23,6 +24,7 @@ import LayoutComponent from "../../components/layout";
 import JoinNextDrawModal from "../../components/Modal/JoinModal";
 import WithdrawnModal from "../../components/Modal/ModalRutTien";
 import { SpinCustom } from "../../components/SpinCustom";
+import { useMoney } from "../../context/MonetContext";
 import {
 	ColorMapping,
 	sepayBanks,
@@ -30,6 +32,49 @@ import {
 } from "../../constants/common";
 
 const { Title } = Typography;
+
+const TabInfo = () => {
+	const user = JSON.parse(localStorage.getItem("axu") || "{}");
+	const { money: balance } = useMoney();
+
+	const items = [
+		{
+			key: "name",
+			label: "Họ và tên",
+			children: user?.name || "-",
+		},
+		{
+			key: "email",
+			label: "Email",
+			children: user?.email || "-",
+		},
+		{
+			key: "phone",
+			label: "Số điện thoại",
+			children: user?.phone || "-",
+		},
+		{
+			key: "balance",
+			label: "Số dư tài khoản",
+			children: `${Number(balance).toLocaleString()} VND`,
+		},
+	];
+
+	return (
+		<Flex vertical={true}>
+			<Title level={4} style={{ marginTop: 0, color: "#fff" }}>
+				Thông tin tài khoản
+			</Title>
+			<Descriptions
+				bordered
+				column={1}
+				items={items}
+				labelStyle={{ color: "var(--text-primary)" }}
+				contentStyle={{ color: "var(--text-primary)" }}
+			/>
+		</Flex>
+	);
+};
 
 const TabPeople = () => {
 	const [openWithDrawn, setOpenWithDrawn] = useState(false);
@@ -379,11 +424,16 @@ export default function OutInDetailPage() {
 	const itemsTabs = [
 		{
 			key: "1",
+			label: "Thông tin tài khoản",
+			children: <TabInfo />,
+		},
+		{
+			key: "2",
 			label: "Rút tiền",
 			children: <TabPeople />,
 		},
 		{
-			key: "2",
+			key: "3",
 			label: "Lịch sử rút tiền",
 			children: <TabTicket />,
 		},
