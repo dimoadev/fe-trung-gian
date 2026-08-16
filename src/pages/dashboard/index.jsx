@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { getListSpin } from "../../api/spin-session/action";
 import { ColorSessionMapping, StatusSessionMapping } from "../../constants/common";
 import TaoHdCocModal from '../../components/Modal/ModalTaoHdCoc';
+import ModalUpdatePhone from '../../components/Modal/ModalUpdatePhone';
 import { getListContract } from '../../api/contract/action';
 
 const { Title } = Typography;
@@ -30,6 +31,7 @@ export default function Home() {
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [modalJoinOpen, setModalJoinOpen] = useState(false);
+	const [modalUpdatePhoneOpen, setModalUpdatePhoneOpen] = useState(false);
 
 	function onCloseModalJoin() {
 		setModalJoinOpen(false);
@@ -110,8 +112,15 @@ export default function Home() {
 	];
 
 	useEffect(() => {
-		  getList(page);
+		getList(page);
 	}, [page]);
+
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('axu') || '{}');
+		if (user?.id && !user?.phone) {
+			setModalUpdatePhoneOpen(true);
+		}
+	}, []);
 
 	return (
 		<div>
@@ -165,6 +174,10 @@ export default function Home() {
 				</div>
 			</LayoutComponent>
 			<TaoHdCocModal open={modalJoinOpen} onClose={onCloseModalJoin}  />
+			<ModalUpdatePhone
+				open={modalUpdatePhoneOpen}
+				onClose={() => setModalUpdatePhoneOpen(false)}
+			/>
 		</div>
 	);
 }

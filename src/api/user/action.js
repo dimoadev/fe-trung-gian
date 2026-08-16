@@ -50,6 +50,11 @@ export const updateProfiles = async (payload) => {
 	return await AppAPIInstance.post(API.USER.UPDATE, data);
 };
 
+export const updatePhone = async (payload) => {
+	const { data } = payload;
+	return await AppAPIInstance.patch(API.USER.UPDATE_PHONE, data);
+};
+
 export const uploadMedia = async (payload) => {
 	const { file } = payload;
 	const form = new FormData();

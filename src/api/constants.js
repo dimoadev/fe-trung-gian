@@ -70,7 +70,8 @@ export const API = {
     REGISTER: "/auth/register",
     SIGNIN_ACCOUNT: "/auth/login",
     UPDATE_PASS: "/auth/forgot-password",
-    FIND: `/users/find`
+    FIND: `/users/find`,
+    UPDATE_PHONE: `/users/phone`
   },
 };
 
