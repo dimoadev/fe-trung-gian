@@ -102,7 +102,7 @@ export default function CocTienModal({
 			title={
 				<div className='flex flex-col'>
 					<span className='text-lg font-semibold'>Nạp tiền</span>
-					<div className='flex items-center gap-1 mt-2 text-sm text-white'>
+					<div className='flex items-center gap-1 mt-2 text-sm text-[var(--text-primary)]'>
 						<span className={step >= 1 ? 'text-cyan-400 font-medium' : ''}>
 							Bước 1
 						</span>
@@ -127,7 +127,7 @@ export default function CocTienModal({
 							</span>{' '}
 							VNĐ
 						</label>
-						<p className='text-sm text-white italic'>
+						<p className='text-sm text-[var(--text-primary)] italic'>
 							Bấm tiếp tục để quét mã chuyển khoản
 						</p>
 						{/* <Controller
@@ -185,8 +185,8 @@ export default function CocTienModal({
 					<div className='flex flex-col items-center justify-center space-y-4 mt-4'>
 						{/* <QRCode value={`deposit:${amount}`} size={180} /> */}
 						<img src={renderQr()} width='180px' height='180px' alt='qr' />
-						<p className='text-white'>Quét mã sau để nạp tiền</p>
-						<p className='text-white'>
+						<p className='text-[var(--text-primary)]'>Quét mã sau để nạp tiền</p>
+						<p className='text-[var(--text-primary)]'>
 							Mã QR hết hạn sau:{' '}
 							<span className='font-semibold text-cyan-400'>
 								{formatTime(timeLeft)}

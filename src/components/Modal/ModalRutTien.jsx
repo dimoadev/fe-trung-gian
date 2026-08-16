@@ -71,7 +71,7 @@ export default function WithdrawnModal({ open, onClose, refetch }) {
 									thousandSeparator=','
 									allowNegative={false}
 									decimalScale={0}
-									className='border text-white w-full rounded-md px-3 py-2 focus:border-none focus:text-white focus:outline-none focus:ring-2 focus:ring-cyan-400'
+									className='border bg-[var(--bg-input)] text-[var(--text-primary)] w-full rounded-md px-3 py-2 focus:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-cyan-400'
 									placeholder='Nhập số tiền'
 									onValueChange={(values) =>
 										field.onChange(Number(values.value))
